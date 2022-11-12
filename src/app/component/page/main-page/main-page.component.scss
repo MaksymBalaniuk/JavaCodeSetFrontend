@@ -1,0 +1,32 @@
+.main-page-container {
+  background-color: #FAFAFA;
+  width: 100%;
+  margin-right: 0;
+  margin-left: 0;
+  padding-top: 20px;
+}
+
+.tabs {
+  position: sticky;
+}
+
+.code-blocks-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: stretch;
+  height: 100%;
+}
+
+.add-button {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+}
+
+.no-results {
+  position: fixed;
+  left: 0;
+  right: 0;
+  margin: auto;
+}

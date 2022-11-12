@@ -1,0 +1,15 @@
+<app-navigation-bar class="navigation-container"></app-navigation-bar>
+<div class="navigation-bar-compensator"></div>
+<router-outlet></router-outlet>
+
+<app-modal *ngIf="modalService.isAuthenticationFormVisible">
+  <app-authentication [title]="'Authentication'"></app-authentication>
+</app-modal>
+
+<app-modal *ngIf="modalService.isRegistrationFormVisible">
+  <app-registration></app-registration>
+</app-modal>
+
+<app-modal *ngIf="modalService.isSessionExpiredFormVisible">
+  <app-authentication [title]="'Your session has expired \n please sing in again'"></app-authentication>
+</app-modal>

@@ -1,0 +1,9 @@
+<div class="profile-page-container">
+  <mat-card *ngIf="currentUser != null">
+    <mat-card-title class="account-title">
+      <mat-icon>account_circle</mat-icon> {{ currentUser.username }}
+    </mat-card-title>
+    <mat-card-subtitle>Account status: {{ currentUser.status.toLowerCase() }}</mat-card-subtitle>
+    <mat-card-subtitle>Account premium: {{ currentUser.premium.toLowerCase() }}</mat-card-subtitle>
+  </mat-card>
+</div>

@@ -1,0 +1,25 @@
+.code-block-edit-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field-container {
+  margin-top: 5px;
+  width: 100%;
+}
+
+.code-block-edit-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.content-error {
+  margin-right: 10px;
+}
+
+textarea::-webkit-scrollbar {
+  width: 0;
+}
