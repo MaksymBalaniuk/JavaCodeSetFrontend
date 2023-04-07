@@ -3,19 +3,24 @@ import {Subject} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ErrorType} from "../type/error-type";
 import { ErrorResponse } from '../dto/error-response';
+import {ModalService} from "./modal.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ErrorService {
 
-  constructor() { }
+  constructor(private modalService: ModalService) { }
 
   error$ = new Subject<string>();
 
   handle(error: HttpErrorResponse): void {
     if (this.determineErrorType(error.error)) {
-      this.error$.next(error.error.message);
+      if (error.error.message == 'JWT is expired') {
+        this.modalService.showSessionExpiredForm();
+      } else {
+        this.error$.next(error.error.message);
+      }
     } else {
       this.error$.next('Unknown error');
     }
