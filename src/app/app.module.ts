@@ -24,6 +24,7 @@ import {MatCardModule} from "@angular/material/card";
 import {MatChipsModule} from "@angular/material/chips";
 import { MainPageComponent } from './component/page/main-page/main-page.component';
 import {MatTabsModule} from "@angular/material/tabs";
+import { ModalComponent } from './component/ui/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {MatTabsModule} from "@angular/material/tabs";
     NoResultsComponent,
     SearchComponent,
     CodeBlockCardComponent,
-    MainPageComponent
+    MainPageComponent,
+    ModalComponent
   ],
     imports: [
         BrowserModule,
