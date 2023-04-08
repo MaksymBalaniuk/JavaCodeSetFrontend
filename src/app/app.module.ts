@@ -29,6 +29,11 @@ import { AuthenticationFormComponent } from './component/ui/authentication-form/
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import { RegistrationFormComponent } from './component/ui/registration-form/registration-form.component';
 import { CommentComponent } from './component/ui/comment/comment.component';
+import {CodeBlockViewComponent} from "./component/ui/code-block-view/code-block-view.component";
+import {ClipboardModule} from "ngx-clipboard";
+import { CodeHighlightDirective } from './directive/code-highlight.directive';
+import {MatExpansionModule} from "@angular/material/expansion";
+import { CommentTimeSortPipe } from './pipe/comment-time-sort.pipe';
 
 @NgModule({
   declarations: [
@@ -44,7 +49,10 @@ import { CommentComponent } from './component/ui/comment/comment.component';
     ModalComponent,
     AuthenticationFormComponent,
     RegistrationFormComponent,
-    CommentComponent
+    CommentComponent,
+    CodeBlockViewComponent,
+    CodeHighlightDirective,
+    CommentTimeSortPipe
   ],
   imports: [
     BrowserModule,
@@ -63,7 +71,9 @@ import { CommentComponent } from './component/ui/comment/comment.component';
     MatChipsModule,
     MatTabsModule,
     ReactiveFormsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    ClipboardModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
