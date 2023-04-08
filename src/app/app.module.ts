@@ -27,6 +27,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import { ModalComponent } from './component/ui/modal/modal.component';
 import { AuthenticationFormComponent } from './component/ui/authentication-form/authentication-form.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import { RegistrationFormComponent } from './component/ui/registration-form/registration-form.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
     CodeBlockCardComponent,
     MainPageComponent,
     ModalComponent,
-    AuthenticationFormComponent
+    AuthenticationFormComponent,
+    RegistrationFormComponent
   ],
   imports: [
     BrowserModule,
