@@ -22,6 +22,8 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import { CodeBlockCardComponent } from './component/ui/code-block-card/code-block-card.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatChipsModule} from "@angular/material/chips";
+import { MainPageComponent } from './component/page/main-page/main-page.component';
+import {MatTabsModule} from "@angular/material/tabs";
 
 @NgModule({
   declarations: [
@@ -32,24 +34,26 @@ import {MatChipsModule} from "@angular/material/chips";
     NavigationBarComponent,
     NoResultsComponent,
     SearchComponent,
-    CodeBlockCardComponent
+    CodeBlockCardComponent,
+    MainPageComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatCheckboxModule,
-    MatPaginatorModule,
-    MatCardModule,
-    MatChipsModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        MatButtonModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        MatCheckboxModule,
+        MatPaginatorModule,
+        MatCardModule,
+        MatChipsModule,
+        MatTabsModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
