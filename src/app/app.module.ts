@@ -16,7 +16,7 @@ import { NoResultsComponent } from './component/ui/no-results/no-results.compone
 import { SearchComponent } from './component/ui/search/search.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import { CodeBlockCardComponent } from './component/ui/code-block-card/code-block-card.component';
@@ -25,6 +25,8 @@ import {MatChipsModule} from "@angular/material/chips";
 import { MainPageComponent } from './component/page/main-page/main-page.component';
 import {MatTabsModule} from "@angular/material/tabs";
 import { ModalComponent } from './component/ui/modal/modal.component';
+import { AuthenticationFormComponent } from './component/ui/authentication-form/authentication-form.component';
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 @NgModule({
   declarations: [
@@ -37,25 +39,28 @@ import { ModalComponent } from './component/ui/modal/modal.component';
     SearchComponent,
     CodeBlockCardComponent,
     MainPageComponent,
-    ModalComponent
+    ModalComponent,
+    AuthenticationFormComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        HttpClientModule,
-        MatButtonModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatInputModule,
-        FormsModule,
-        MatCheckboxModule,
-        MatPaginatorModule,
-        MatCardModule,
-        MatChipsModule,
-        MatTabsModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatCheckboxModule,
+    MatPaginatorModule,
+    MatCardModule,
+    MatChipsModule,
+    MatTabsModule,
+    ReactiveFormsModule,
+    MatProgressBarModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
