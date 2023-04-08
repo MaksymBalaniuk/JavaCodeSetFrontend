@@ -28,6 +28,7 @@ import { ModalComponent } from './component/ui/modal/modal.component';
 import { AuthenticationFormComponent } from './component/ui/authentication-form/authentication-form.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import { RegistrationFormComponent } from './component/ui/registration-form/registration-form.component';
+import { CommentComponent } from './component/ui/comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { RegistrationFormComponent } from './component/ui/registration-form/regi
     MainPageComponent,
     ModalComponent,
     AuthenticationFormComponent,
-    RegistrationFormComponent
+    RegistrationFormComponent,
+    CommentComponent
   ],
   imports: [
     BrowserModule,
