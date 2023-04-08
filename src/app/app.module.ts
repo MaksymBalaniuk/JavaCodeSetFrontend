@@ -13,6 +13,12 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import { NoResultsComponent } from './component/ui/no-results/no-results.component';
+import { SearchComponent } from './component/ui/search/search.component';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {FormsModule} from "@angular/forms";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 @NgModule({
   declarations: [
@@ -21,7 +27,8 @@ import { NoResultsComponent } from './component/ui/no-results/no-results.compone
     DateFormatterPipe,
     CodeBlockTimeSortPipe,
     NavigationBarComponent,
-    NoResultsComponent
+    NoResultsComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +37,12 @@ import { NoResultsComponent } from './component/ui/no-results/no-results.compone
     HttpClientModule,
     MatButtonModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatCheckboxModule,
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]
