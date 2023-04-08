@@ -32,7 +32,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.currentUserPremiumLimitsSubscription$ =
       this.authenticationContextService.userPremiumLimits$.subscribe(premiumLimits => {
         this.currentUserPremiumLimits = premiumLimits;
-        this.loadPubicContext();
+        this.dataLoadContextService.loadLastFilteredCodeBlocksContext();
       });
   }
 
