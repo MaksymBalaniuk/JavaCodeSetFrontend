@@ -11,7 +11,7 @@ import {ErrorService} from "../../../service/error.service";
 @Component({
   selector: 'app-registration-form',
   templateUrl: './registration-form.component.html',
-  styleUrls: ['./../authentication/authentication.component.scss']
+  styleUrls: ['./../authentication-form/authentication-form.component.scss']
 })
 export class RegistrationFormComponent implements OnInit {
 
