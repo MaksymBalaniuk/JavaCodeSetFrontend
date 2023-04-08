@@ -23,7 +23,10 @@ import {LoadContext} from "../../../enumeration/load-context";
 @Component({
   selector: 'app-code-block-view',
   templateUrl: './code-block-view.component.html',
-  styleUrls: ['./code-block-view.component.scss']
+  styleUrls: [
+    './code-block-view.component.scss',
+    './../../page/code-block-page/code-block-page.component.scss'
+  ]
 })
 export class CodeBlockViewComponent implements OnInit {
 

@@ -14,7 +14,10 @@ import {LoadContext} from "../../../enumeration/load-context";
 @Component({
   selector: 'app-code-block-edit',
   templateUrl: './code-block-edit.component.html',
-  styleUrls: ['./code-block-edit.component.scss']
+  styleUrls: [
+    './code-block-edit.component.scss',
+    './../../page/code-block-page/code-block-page.component.scss'
+  ]
 })
 export class CodeBlockEditComponent implements OnInit, OnDestroy {
 

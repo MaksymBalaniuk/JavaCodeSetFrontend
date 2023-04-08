@@ -35,6 +35,7 @@ import { CodeHighlightDirective } from './directive/code-highlight.directive';
 import {MatExpansionModule} from "@angular/material/expansion";
 import { CommentTimeSortPipe } from './pipe/comment-time-sort.pipe';
 import { CodeBlockEditComponent } from './component/ui/code-block-edit/code-block-edit.component';
+import { CodeBlockPageComponent } from './component/page/code-block-page/code-block-page.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { CodeBlockEditComponent } from './component/ui/code-block-edit/code-bloc
     CodeBlockViewComponent,
     CodeHighlightDirective,
     CommentTimeSortPipe,
-    CodeBlockEditComponent
+    CodeBlockEditComponent,
+    CodeBlockPageComponent
   ],
   imports: [
     BrowserModule,

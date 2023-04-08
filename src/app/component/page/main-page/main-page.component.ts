@@ -32,7 +32,12 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.currentUserPremiumLimitsSubscription$ =
       this.authenticationContextService.userPremiumLimits$.subscribe(premiumLimits => {
         this.currentUserPremiumLimits = premiumLimits;
-        this.dataLoadContextService.loadLastFilteredCodeBlocksContext();
+        if (this.dataLoadContextService.loadContext == LoadContext.CODE_BLOCK_VIEW ||
+          this.dataLoadContextService.loadContext == LoadContext.CODE_BLOCK_EDIT) {
+          this.loadPubicContext();
+        } else {
+          this.dataLoadContextService.loadLastFilteredCodeBlocksContext();
+        }
       });
   }
 
@@ -47,7 +52,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   tabChanged(tabChangeEvent: MatTabChangeEvent): void {
     if (tabChangeEvent.index == 0) {
-      this.loadPubicContext()
+      this.loadPubicContext();
     } else if (tabChangeEvent.index == 1) {
       this.loadPrivateContext();
     } else if (tabChangeEvent.index == 2) {
