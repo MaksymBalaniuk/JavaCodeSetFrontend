@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CodeBlockPaginatorPipe } from './pipe/code-block-paginator.pipe';
 import { DateFormatterPipe } from './pipe/date-formatter.pipe';
+import { CodeBlockTimeSortPipe } from './pipe/code-block-time-sort.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     CodeBlockPaginatorPipe,
-    DateFormatterPipe
+    DateFormatterPipe,
+    CodeBlockTimeSortPipe
   ],
   imports: [
     BrowserModule,
