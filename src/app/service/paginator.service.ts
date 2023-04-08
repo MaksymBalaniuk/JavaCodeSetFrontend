@@ -14,7 +14,9 @@ export class PaginatorService {
   pageSizeOptions!: number[];
   codeBlocksSubscription$!: Subscription;
 
-  constructor(private dataLoadContextService: DataLoadContextService) { }
+  constructor(private dataLoadContextService: DataLoadContextService) {
+    this.initOptions();
+  }
 
   initOptions() {
     if (this.codeBlocksSubscription$ != undefined) {

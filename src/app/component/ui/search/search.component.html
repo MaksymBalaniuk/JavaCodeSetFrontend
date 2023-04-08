@@ -15,7 +15,7 @@
                     [checked]="allComplete"
                     [color]="'primary'"
                     [indeterminate]="someComplete()"
-                    (change)="setAll($event.checked)">
+                    (change)="setAllAndSearch($event.checked)">
         {{task.name}}
       </mat-checkbox>
       <div *ngIf="!allComplete">
@@ -23,7 +23,7 @@
                       *ngFor="let subtask of task.subtasks"
                       [(ngModel)]="subtask.completed"
                       [color]="'primary'"
-                      (change)="updateAllComplete()">
+                      (change)="updateAllCompleteAndSearch()">
           {{subtask.name}}
         </mat-checkbox>
       </div>

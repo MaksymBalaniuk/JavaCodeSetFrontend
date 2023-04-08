@@ -3,6 +3,7 @@ import {FilterCodeBlockTask} from "../../../entity/filter-code-block-task";
 import {DataLoadContextService} from "../../../service/data-load-context.service";
 import {PaginatorService} from "../../../service/paginator.service";
 import {SearchService} from "../../../service/search.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-search',
@@ -11,35 +12,43 @@ import {SearchService} from "../../../service/search.service";
 })
 export class SearchComponent implements OnInit, OnDestroy {
 
-  task: FilterCodeBlockTask = {
-    name: 'All',
-    completed: true,
-    subtasks: [
-      {name: 'Title', completed: true},
-      {name: 'Tag', completed: true},
-      {name: 'Description', completed: true},
-      {name: 'Content', completed: true}
-    ]
-  };
-
+  task!: FilterCodeBlockTask;
   allComplete: boolean = true;
   filterQuery = '';
+
+  filterCodeBlockTaskSubscription$!: Subscription;
+  filterQuerySubscription$!: Subscription;
 
   constructor(private searchService: SearchService,
               public paginatorService: PaginatorService,
               public dataLoadContextService: DataLoadContextService) { }
 
   ngOnInit(): void {
-    this.paginatorService.initOptions();
+    this.filterCodeBlockTaskSubscription$ = this.searchService.filterCodeBlockTask$
+      .subscribe(task => {
+        this.task = task;
+        this.updateAllComplete(task);
+      });
+    this.filterQuerySubscription$ = this.searchService.filterQuery$
+      .subscribe(filterQuery => this.filterQuery = filterQuery);
   }
 
   ngOnDestroy(): void {
-    this.searchService.clear();
+    if (this.filterCodeBlockTaskSubscription$ != undefined) {
+      this.filterCodeBlockTaskSubscription$.unsubscribe();
+    }
+    if (this.filterQuerySubscription$ != undefined) {
+      this.filterQuerySubscription$.unsubscribe();
+    }
   }
 
-  updateAllComplete() {
-    this.allComplete = this.task.subtasks != null && this.task.subtasks.every(t => t.completed);
+  updateAllCompleteAndSearch(): void {
+    this.updateAllComplete(this.task);
     this.search();
+  }
+
+  updateAllComplete(task: FilterCodeBlockTask): void {
+    this.allComplete = task.subtasks != null && task.subtasks.every(t => t.completed);
   }
 
   someComplete(): boolean {
@@ -49,7 +58,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     return this.task.subtasks.filter(t => t.completed).length > 0 && !this.allComplete;
   }
 
-  setAll(completed: boolean) {
+  setAllAndSearch(completed: boolean): void {
     this.allComplete = completed;
     if (this.task.subtasks == null) {
       return;
@@ -58,9 +67,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.search();
   }
 
-  search() {
-    this.searchService.filterQuery = this.filterQuery;
-    this.searchService.filterCodeBlockTask = this.task;
+  search(): void {
+    this.searchService.filterQuery$.next(this.filterQuery);
+    this.searchService.filterCodeBlockTask$.next(this.task);
     this.dataLoadContextService.loadLastFilteredCodeBlocksContext();
   }
 }

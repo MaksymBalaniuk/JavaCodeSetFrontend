@@ -70,7 +70,7 @@ export class DataLoadContextService {
   loadFilteredCodeBlocks(...codeBlockTypes: Array<CodeBlockType>): void {
     this.getAllFilteredCodeBlocksSubscription$ = this.codeBlockService.getAllFilteredCodeBlocks(
       this.mapToFilterCodeBlock(
-        this.searchService.filterQuery, this.searchService.filterCodeBlockTask, codeBlockTypes))
+        this.searchService.filterQuery$.value, this.searchService.filterCodeBlockTask$.value, codeBlockTypes))
       .subscribe(codeBlocks => this.codeBlocks$.next(codeBlocks));
   }
 
@@ -79,7 +79,7 @@ export class DataLoadContextService {
       this.getAllFilteredCodeBlocksByUserIdSubscription$ = this.codeBlockService.getAllFilteredCodeBlocksByUserId(
         userDetails.user.id, userDetails.token,
         this.mapToFilterCodeBlock(
-          this.searchService.filterQuery, this.searchService.filterCodeBlockTask, codeBlockTypes))
+          this.searchService.filterQuery$.value, this.searchService.filterCodeBlockTask$.value, codeBlockTypes))
         .subscribe(codeBlocks => this.codeBlocks$.next(codeBlocks));
     }
   }
@@ -90,7 +90,7 @@ export class DataLoadContextService {
       this.getAllFilteredCodeBlocksByUserIdAndEstimateTypeSubscription$ = this.codeBlockService
         .getAllFilteredCodeBlocksByUserIdAndEstimateType(userDetails.user.id, userDetails.token, estimateType,
           this.mapToFilterCodeBlock(
-            this.searchService.filterQuery, this.searchService.filterCodeBlockTask, codeBlockTypes))
+            this.searchService.filterQuery$.value, this.searchService.filterCodeBlockTask$.value, codeBlockTypes))
         .subscribe(codeBlocks => this.codeBlocks$.next(codeBlocks));
     }
   }

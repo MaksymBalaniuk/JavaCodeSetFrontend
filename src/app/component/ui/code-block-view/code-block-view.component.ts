@@ -330,15 +330,14 @@ export class CodeBlockViewComponent implements OnInit {
           .subscribe(() => {
             this.dataLoadContextService.currentCodeBlock = null;
             this.dataLoadContextService.loadContext = LoadContext.PUBLIC_CODE_BLOCKS;
-            this.searchService.clear();
             this.router.navigateByUrl('').then();
           });
     }
   }
 
   searchByTag(tagName: string) {
-    this.searchService.filterQuery = tagName;
-    this.searchService.filterCodeBlockTask = {
+    this.searchService.filterQuery$.next(tagName);
+    this.searchService.filterCodeBlockTask$.next({
       name: 'All',
       completed: false,
       subtasks: [
@@ -347,7 +346,7 @@ export class CodeBlockViewComponent implements OnInit {
         {name: 'Description', completed: false},
         {name: 'Content', completed: false}
       ]
-    };
+    });
     this.dataLoadContextService.currentCodeBlock = null;
     this.dataLoadContextService.loadContext = LoadContext.PUBLIC_CODE_BLOCKS;
   }

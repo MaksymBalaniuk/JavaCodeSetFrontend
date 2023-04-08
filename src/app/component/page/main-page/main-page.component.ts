@@ -4,7 +4,6 @@ import {Subscription} from "rxjs";
 import {CodeBlockEntity} from "../../../entity/code-block-entity";
 import {AuthenticationContextService} from "../../../service/authentication-context.service";
 import {DataLoadContextService} from "../../../service/data-load-context.service";
-import {PaginatorService} from "../../../service/paginator.service";
 import {MatTabChangeEvent} from "@angular/material/tabs";
 import {LoadContext} from "../../../enumeration/load-context";
 
@@ -23,8 +22,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   codeBlocksSubscription$!: Subscription;
 
   constructor(public authenticationContextService: AuthenticationContextService,
-              public dataLoadContextService: DataLoadContextService,
-              private paginatorService: PaginatorService) { }
+              public dataLoadContextService: DataLoadContextService) { }
 
   ngOnInit(): void {
     this.codeBlocksSubscription$ = this.dataLoadContextService.codeBlocks$
@@ -58,7 +56,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
     } else if (tabChangeEvent.index == 2) {
       this.loadFavoritesContext();
     }
-    this.paginatorService.initOptions();
   }
 
   isAddCodeBlockButtonAvailable(): boolean {
