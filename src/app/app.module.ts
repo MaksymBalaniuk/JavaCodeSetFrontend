@@ -5,11 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CodeBlockPaginatorPipe } from './pipe/code-block-paginator.pipe';
+import { DateFormatterPipe } from './pipe/date-formatter.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CodeBlockPaginatorPipe
+    CodeBlockPaginatorPipe,
+    DateFormatterPipe
   ],
   imports: [
     BrowserModule,
