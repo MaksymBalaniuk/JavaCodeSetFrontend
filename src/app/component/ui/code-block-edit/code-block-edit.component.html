@@ -1,0 +1,54 @@
+<div class="code-block-page-container">
+  <mat-card class="code-block-edit-container">
+    <mat-card-title>
+      {{ codeBlock == null ? 'Creating a code block' : 'Editing a code block' }}
+    </mat-card-title>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field class="form-field-container" appearance="fill">
+        <mat-label>Title</mat-label>
+        <input matInput
+               [formControl]="title"
+               required>
+        <mat-error *ngIf="title.invalid">{{ titleErrorMessage }}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-field-container" appearance="fill">
+        <mat-label>Description</mat-label>
+        <input matInput
+               [formControl]="description">
+        <mat-error *ngIf="description.invalid">{{ descriptionErrorMessage }}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-field-container" appearance="fill">
+        <mat-label>Code</mat-label>
+        <textarea matInput
+                  cdkTextareaAutosize
+                  cdkAutosizeMinRows="1"
+                  [(ngModel)]="codeBlockContent" [ngModelOptions]="{standalone: true}"
+                  (focus)="retryInput()"
+                  required>
+        </textarea>
+      </mat-form-field>
+      <mat-form-field class="form-field-container" appearance="fill">
+        <mat-label>Tags</mat-label>
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let tag of tags" (removed)="removeTag(tag)">
+            {{ tag }}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+          <input placeholder="New tag..."
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="addTag($event)">
+        </mat-chip-list>
+      </mat-form-field>
+      <div class="code-block-edit-buttons">
+        <mat-error class="content-error" *ngIf="!successContent">{{ contentErrorMessage }}</mat-error>
+        <button mat-raised-button color="primary" type="submit">
+          {{ codeBlock == null ? 'Create code block' : 'Save changes' }}
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

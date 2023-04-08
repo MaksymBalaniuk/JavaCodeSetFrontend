@@ -34,6 +34,7 @@ import {ClipboardModule} from "ngx-clipboard";
 import { CodeHighlightDirective } from './directive/code-highlight.directive';
 import {MatExpansionModule} from "@angular/material/expansion";
 import { CommentTimeSortPipe } from './pipe/comment-time-sort.pipe';
+import { CodeBlockEditComponent } from './component/ui/code-block-edit/code-block-edit.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { CommentTimeSortPipe } from './pipe/comment-time-sort.pipe';
     CommentComponent,
     CodeBlockViewComponent,
     CodeHighlightDirective,
-    CommentTimeSortPipe
+    CommentTimeSortPipe,
+    CodeBlockEditComponent
   ],
   imports: [
     BrowserModule,
