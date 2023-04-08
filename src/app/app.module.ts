@@ -19,6 +19,9 @@ import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import { CodeBlockCardComponent } from './component/ui/code-block-card/code-block-card.component';
+import {MatCardModule} from "@angular/material/card";
+import {MatChipsModule} from "@angular/material/chips";
 
 @NgModule({
   declarations: [
@@ -28,7 +31,8 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     CodeBlockTimeSortPipe,
     NavigationBarComponent,
     NoResultsComponent,
-    SearchComponent
+    SearchComponent,
+    CodeBlockCardComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +46,9 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     MatInputModule,
     FormsModule,
     MatCheckboxModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatCardModule,
+    MatChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
