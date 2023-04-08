@@ -1,0 +1,59 @@
+<mat-toolbar color="primary" class="toolbar-container">
+  <div class="nav-flex-container">
+    <div class="nav-inner-container">
+      <img src="../../../../assets/image/java-code-set-logo.png"
+           alt="JavaCodeSet"
+           class="logo"
+           routerLink=""/>
+    </div>
+    <div class="nav-inner-container">
+      <div class="nav-links-container">
+        <button mat-button
+                color="accent"
+                class="inner-content"
+                routerLink="">
+          Main
+        </button>
+        <button mat-button
+                color="accent"
+                class="inner-content"
+                routerLink="compiler"
+                *ngIf="authenticationContextService.isAuthorized$ | async">
+          Compiler
+        </button>
+        <button mat-button
+                color="accent"
+                class="inner-content"
+                routerLink="premium"
+                *ngIf="authenticationContextService.isAuthorized$ | async">
+          Premium
+        </button>
+      </div>
+      <div class="nav-inner-container" *ngIf="!(authenticationContextService.isAuthorized$ | async)">
+        <button mat-raised-button
+                class="inner-content"
+                color="accent"
+                (click)="modalService.showRegistrationForm()">
+          Sign up
+        </button>
+        <button mat-raised-button
+                class="inner-content"
+                color="accent"
+                (click)="modalService.showAuthenticationForm()">
+          Sign in
+        </button>
+      </div>
+      <div class="nav-inner-container" *ngIf="authenticationContextService.isAuthorized$ | async">
+        <mat-icon class="inner-content">account_circle</mat-icon>
+        <mat-icon class="inner-content" *ngIf="userPremium">stars</mat-icon>
+        <p class="inner-content" routerLink="profile">{{ username }}</p>
+        <button mat-raised-button
+                class="inner-content"
+                color="accent"
+                (click)="logout(); authenticationContextService.logout()">
+          Sign out
+        </button>
+      </div>
+    </div>
+  </div>
+</mat-toolbar>
