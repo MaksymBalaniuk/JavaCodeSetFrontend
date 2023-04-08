@@ -12,6 +12,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {MatButtonModule} from "@angular/material/button";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
+import { NoResultsComponent } from './component/ui/no-results/no-results.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {MatIconModule} from "@angular/material/icon";
     CodeBlockPaginatorPipe,
     DateFormatterPipe,
     CodeBlockTimeSortPipe,
-    NavigationBarComponent
+    NavigationBarComponent,
+    NoResultsComponent
   ],
   imports: [
     BrowserModule,
