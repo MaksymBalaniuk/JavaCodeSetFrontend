@@ -4,27 +4,30 @@
       <img src="../../../../assets/image/java-code-set-logo.png"
            alt="JavaCodeSet"
            class="logo"
-           routerLink=""/>
+           (click)="redirectToMainPage()"/>
     </div>
     <div class="nav-inner-container">
       <div class="nav-links-container">
         <button mat-button
+                [ngStyle]="{'text-decoration': isMainPageCurrent() ? 'underline' : 'none'}"
                 color="accent"
                 class="inner-content"
-                routerLink="">
+                (click)="redirectToMainPage()">
           Main
         </button>
         <button mat-button
+                [ngStyle]="{'text-decoration': isCompilerPageCurrent() ? 'underline' : 'none'}"
                 color="accent"
                 class="inner-content"
-                routerLink="compiler"
+                (click)="redirectToCompilerPage()"
                 *ngIf="authenticationContextService.isAuthorized$ | async">
           Compiler
         </button>
         <button mat-button
+                [ngStyle]="{'text-decoration': isPremiumPageCurrent() ? 'underline' : 'none'}"
                 color="accent"
                 class="inner-content"
-                routerLink="premium"
+                (click)="redirectToPremiumPage()"
                 *ngIf="authenticationContextService.isAuthorized$ | async">
           Premium
         </button>
@@ -46,7 +49,7 @@
       <div class="nav-inner-container" *ngIf="authenticationContextService.isAuthorized$ | async">
         <mat-icon class="inner-content">account_circle</mat-icon>
         <mat-icon class="inner-content" *ngIf="userPremium">stars</mat-icon>
-        <p class="inner-content" routerLink="profile">{{ username }}</p>
+        <p class="inner-content">{{ username }}</p>
         <button mat-raised-button
                 class="inner-content"
                 color="accent"

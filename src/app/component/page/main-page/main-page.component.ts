@@ -6,6 +6,7 @@ import {AuthenticationContextService} from "../../../service/authentication-cont
 import {DataLoadContextService} from "../../../service/data-load-context.service";
 import {MatTabChangeEvent} from "@angular/material/tabs";
 import {LoadContext} from "../../../enumeration/load-context";
+import {NavigationService} from "../../../service/navigation.service";
 
 @Component({
   selector: 'app-main-page',
@@ -23,7 +24,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
   codeBlocksSubscription$!: Subscription;
 
   constructor(public authenticationContextService: AuthenticationContextService,
-              public dataLoadContextService: DataLoadContextService) { }
+              public dataLoadContextService: DataLoadContextService,
+              private navigationService: NavigationService) { }
 
   ngOnInit(): void {
     this.codeBlocksSubscription$ = this.dataLoadContextService.codeBlocks$
@@ -103,5 +105,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
   addNewCodeBlock(): void {
     this.dataLoadContextService.setCurrentCodeBlock(null);
     this.dataLoadContextService.setLoadContext(LoadContext.CODE_BLOCK_EDIT);
+    this.navigationService.redirectToCodeBlockPage();
   }
 }

@@ -15,10 +15,10 @@ import {CommentService} from "../../../service/api/comment.service";
 import {TagService} from "../../../service/api/tag.service";
 import {CodeBlockService} from "../../../service/api/code-block.service";
 import {SearchService} from "../../../service/search.service";
-import {Router} from "@angular/router";
 import {EstimateType} from "../../../enumeration/estimate-type";
 import {CodeBlockType} from "../../../enumeration/code-block-type";
 import {LoadContext} from "../../../enumeration/load-context";
+import {NavigationService} from "../../../service/navigation.service";
 
 @Component({
   selector: 'app-code-block-view',
@@ -30,10 +30,10 @@ import {LoadContext} from "../../../enumeration/load-context";
 })
 export class CodeBlockViewComponent implements OnInit {
 
-  codeBlock!: CodeBlockEntity | undefined;
+  codeBlock!: CodeBlockEntity | null;
   currentUserDetails!: UserDetails;
   currentUserPermissions!: UserPermissions;
-  currentUserEstimate!: EstimateEntity | undefined;
+  currentUserEstimate!: EstimateEntity | null;
   author!: UserEntity;
   commentText = '';
   comments!: Array<CommentEntity>;
@@ -62,7 +62,7 @@ export class CodeBlockViewComponent implements OnInit {
               private tagService: TagService,
               private codeBlockService: CodeBlockService,
               private searchService: SearchService,
-              private router: Router) { }
+              private navigationService: NavigationService) { }
 
   ngOnInit(): void {
     this.loadCurrentUserAndPrimaryData();
@@ -130,7 +130,7 @@ export class CodeBlockViewComponent implements OnInit {
     this.currentUserSubscription$ = this.authenticationContextService.userDetails$
       .subscribe(userDetails => {
         this.currentUserDetails = userDetails;
-        this.currentUserEstimate = undefined;
+        this.currentUserEstimate = null;
         this.loadPrimaryData();
       });
   }
@@ -139,7 +139,7 @@ export class CodeBlockViewComponent implements OnInit {
     if (this.authorSubscription$ != undefined) {
       this.authorSubscription$.unsubscribe();
     }
-    if (this.codeBlock != undefined) {
+    if (this.codeBlock != null) {
       this.authorSubscription$ = this.userService.getUserById(this.codeBlock.userId)
         .subscribe(user => this.author = user);
     }
@@ -149,7 +149,7 @@ export class CodeBlockViewComponent implements OnInit {
     if (this.estimatesSubscription$ != undefined) {
       this.estimatesSubscription$.unsubscribe();
     }
-    if (this.codeBlock != undefined) {
+    if (this.codeBlock != null) {
       this.estimatesSubscription$ = this.estimateService.getAllEstimatesByCodeBlockId(this.codeBlock.id)
         .subscribe(estimates => {
             this.estimates = estimates;
@@ -165,7 +165,7 @@ export class CodeBlockViewComponent implements OnInit {
   }
 
   loadTags(): void {
-    if (this.codeBlock != undefined) {
+    if (this.codeBlock != null) {
       this.tagsSubscription$ = this.tagService.getAllTagsByCodeBlockId(this.codeBlock.id).subscribe(
         tags => this.tags = tags
       );
@@ -173,7 +173,7 @@ export class CodeBlockViewComponent implements OnInit {
   }
 
   loadComments(): void {
-    if (this.codeBlock != undefined) {
+    if (this.codeBlock != null) {
       this.commentsSubscription$ = this.commentsService.getAllCommentsByCodeBlockId(this.codeBlock.id).subscribe(
         comments => this.comments = comments
       );
@@ -181,21 +181,21 @@ export class CodeBlockViewComponent implements OnInit {
   }
 
   isCodeBlockLikedByCurrentUser(): boolean {
-    if (this.currentUserEstimate == undefined) {
+    if (this.currentUserEstimate == null) {
       return false;
     }
     return this.currentUserEstimate.type == EstimateType.LIKE;
   }
 
   isCodeBlockDislikedByCurrentUser(): boolean {
-    if (this.currentUserEstimate == undefined) {
+    if (this.currentUserEstimate == null) {
       return false;
     }
     return this.currentUserEstimate.type == EstimateType.DISLIKE;
   }
 
   isCodeBlockPublic(): boolean {
-    if (this.codeBlock == undefined) {
+    if (this.codeBlock == null) {
       return false;
     }
     return this.codeBlock.type == CodeBlockType.PUBLIC;
@@ -203,7 +203,7 @@ export class CodeBlockViewComponent implements OnInit {
 
   like(): void {
     if (this.currentUserDetails != undefined && this.currentUserDetails.user != null) {
-      if (this.currentUserEstimate == undefined) {
+      if (this.currentUserEstimate == null) {
         this.createEstimate(
           this.currentUserDetails.user,
           this.currentUserDetails.token,
@@ -221,7 +221,7 @@ export class CodeBlockViewComponent implements OnInit {
 
   dislike(): void {
     if (this.currentUserDetails != undefined && this.currentUserDetails.user != null) {
-      if (this.currentUserEstimate == undefined) {
+      if (this.currentUserEstimate == null) {
         this.createEstimate(
           this.currentUserDetails.user,
           this.currentUserDetails.token,
@@ -241,7 +241,7 @@ export class CodeBlockViewComponent implements OnInit {
     if (this.createEstimateSubscription$ != undefined) {
       this.createEstimateSubscription$.unsubscribe();
     }
-    if (this.codeBlock != undefined) {
+    if (this.codeBlock != null) {
       this.createEstimateSubscription$ = this.estimateService.createEstimate({
         id: '',
         type: estimateType,
@@ -271,7 +271,7 @@ export class CodeBlockViewComponent implements OnInit {
     }
     this.deleteEstimateSubscription$ = this.estimateService.deleteEstimateById(estimateId, token)
       .subscribe(() => {
-        this.currentUserEstimate = undefined;
+        this.currentUserEstimate = null;
         this.loadEstimates();
       });
   }
@@ -282,7 +282,7 @@ export class CodeBlockViewComponent implements OnInit {
     }
     if (this.currentUserDetails != undefined &&
       this.currentUserDetails.user != null &&
-      this.codeBlock != undefined) {
+      this.codeBlock != null) {
       this.createCommentSubscription$ = this.commentsService.createComment({
         id: '',
         comment: this.commentText,
@@ -304,7 +304,7 @@ export class CodeBlockViewComponent implements OnInit {
 
   updateCodeBlockType(type: CodeBlockType): void {
     if (this.currentUserDetails != undefined && this.currentUserDetails.user != null
-      && this.codeBlock != undefined) {
+      && this.codeBlock != null) {
       this.codeBlock.type = type;
       this.codeBlockService.updateCodeBlock(this.codeBlock, this.currentUserDetails.token)
         .subscribe(codeBlock => {
@@ -315,14 +315,14 @@ export class CodeBlockViewComponent implements OnInit {
   }
 
   editCodeBlock(): void {
-    if (this.codeBlock != undefined) {
+    if (this.codeBlock != null) {
       this.dataLoadContextService.setCurrentCodeBlock(this.codeBlock);
       this.dataLoadContextService.setLoadContext(LoadContext.CODE_BLOCK_EDIT);
     }
   }
 
   deleteCodeBlock(): void {
-    if (this.codeBlock != undefined) {
+    if (this.codeBlock != null) {
       if (this.deleteCodeBlockSubscription$ != undefined) {
         this.deleteCodeBlockSubscription$.unsubscribe();
       }
@@ -331,7 +331,7 @@ export class CodeBlockViewComponent implements OnInit {
           .subscribe(() => {
             this.dataLoadContextService.setCurrentCodeBlock(null);
             this.dataLoadContextService.setLoadContext(LoadContext.PUBLIC_CODE_BLOCKS);
-            this.router.navigateByUrl('').then();
+            this.navigationService.redirectToMainPage();
           });
     }
   }
@@ -350,5 +350,19 @@ export class CodeBlockViewComponent implements OnInit {
     });
     this.dataLoadContextService.setCurrentCodeBlock(null);
     this.dataLoadContextService.setLoadContext(LoadContext.PUBLIC_CODE_BLOCKS);
+    this.navigationService.redirectToMainPage();
+  }
+
+  addNewCodeBlock(): void {
+    this.dataLoadContextService.setCurrentCodeBlock(null);
+    this.dataLoadContextService.clipboardCodeBlock = this.codeBlock;
+    this.dataLoadContextService.clipboardTags = this.tags;
+    this.dataLoadContextService.setLoadContext(LoadContext.CODE_BLOCK_EDIT);
+  }
+
+  openCodeBlockInCompiler(): void {
+    this.dataLoadContextService.clipboardCodeBlock = this.codeBlock;
+    this.dataLoadContextService.clipboardTags = this.tags;
+    this.navigationService.redirectToCompilerPage();
   }
 }

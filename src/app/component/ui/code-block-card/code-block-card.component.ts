@@ -11,6 +11,7 @@ import {UserEntity} from "../../../entity/user-entity";
 import {Subscription} from "rxjs";
 import {EstimateType} from "../../../enumeration/estimate-type";
 import {LoadContext} from "../../../enumeration/load-context";
+import {NavigationService} from "../../../service/navigation.service";
 
 @Component({
   selector: 'app-code-block-card',
@@ -34,7 +35,8 @@ export class CodeBlockCardComponent implements OnInit, OnDestroy {
               private userService: UserService,
               private estimateService: EstimateService,
               private searchService: SearchService,
-              private dataLoadContextService: DataLoadContextService) { }
+              private dataLoadContextService: DataLoadContextService,
+              private navigationService: NavigationService) { }
 
   ngOnInit(): void {
     this.loadTags();
@@ -94,5 +96,6 @@ export class CodeBlockCardComponent implements OnInit, OnDestroy {
   viewCodeBlock(): void {
     this.dataLoadContextService.setCurrentCodeBlock(this.codeBlock);
     this.dataLoadContextService.setLoadContext(LoadContext.CODE_BLOCK_VIEW);
+    this.navigationService.redirectToCodeBlockPage();
   }
 }

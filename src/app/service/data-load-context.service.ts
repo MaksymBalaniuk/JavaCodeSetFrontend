@@ -13,6 +13,7 @@ import {FilterCodeBlock} from "../dto/filter-code-block";
 import {ShareEntity} from "../entity/share-entity";
 import {ShareService} from "./api/share.service";
 import {LocalStorageService} from "./local-storage.service";
+import {TagEntity} from "../entity/tag-entity";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,8 @@ export class DataLoadContextService {
 
   private loadContext = LoadContext.PUBLIC_CODE_BLOCKS;
   private currentCodeBlock!: CodeBlockEntity | null;
+  clipboardCodeBlock!: CodeBlockEntity | null;
+  clipboardTags: Array<TagEntity> = [];
   userDetails!: UserDetails;
   codeBlocks$ = new Subject<Array<CodeBlockEntity>>();
   shares$ = new Subject<Array<ShareEntity>>();
@@ -47,6 +50,8 @@ export class DataLoadContextService {
           } else {
             this.setLoadContext(LoadContext.CODE_BLOCK_VIEW);
           }
+        } else {
+          this.setLoadContext(LoadContext.PUBLIC_CODE_BLOCKS);
         }
       } else {
         this.setLoadContext(localLoadContext);

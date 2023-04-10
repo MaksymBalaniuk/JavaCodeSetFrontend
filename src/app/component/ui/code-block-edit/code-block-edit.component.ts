@@ -144,11 +144,20 @@ export class CodeBlockEditComponent implements OnInit, OnDestroy {
     const titleValidators = [Validators.required, Validators.maxLength(100)];
     const descriptionValidators = [Validators.maxLength(255)];
     const contentValidators = [Validators.required, Validators.maxLength(codeBlockContentLimit)];
+    const clipboardCodeBlock = this.dataLoadContextService.clipboardCodeBlock;
+    const clipboardTags = this.dataLoadContextService.clipboardTags;
 
     if (this.codeBlock != null) {
       this.form.controls.title = new FormControl(this.codeBlock.title, titleValidators);
       this.form.controls.description = new FormControl(this.codeBlock.description, descriptionValidators);
       this.form.controls.content = new FormControl(this.codeBlock.content, contentValidators);
+    } else if (clipboardCodeBlock != null) {
+      this.form.controls.title = new FormControl(clipboardCodeBlock.title, titleValidators);
+      this.form.controls.description = new FormControl(clipboardCodeBlock.description, descriptionValidators);
+      this.form.controls.content = new FormControl(clipboardCodeBlock.content, contentValidators);
+      this.tags = clipboardTags.map(tag => tag.name);
+      this.dataLoadContextService.clipboardCodeBlock = null;
+      this.dataLoadContextService.clipboardTags = [];
     } else {
       this.form.controls.title = new FormControl('', titleValidators);
       this.form.controls.description = new FormControl('', descriptionValidators);

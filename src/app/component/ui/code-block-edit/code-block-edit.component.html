@@ -21,7 +21,8 @@
       </mat-form-field>
       <mat-form-field class="form-field-container" appearance="fill">
         <mat-label>Code</mat-label>
-        <textarea matInput
+        <textarea class="content-textarea"
+                  matInput
                   #codeInputArea
                   [formControl]="content"
                   (keydown.tab)="suppressTabEvent($event, codeInputArea)"

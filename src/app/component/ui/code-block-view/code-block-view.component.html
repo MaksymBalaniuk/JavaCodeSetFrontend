@@ -1,4 +1,4 @@
-<div class="code-block-page-container" *ngIf="codeBlock != undefined">
+<div class="code-block-page-container" *ngIf="codeBlock != null">
   <div class="title">
     <h2>{{ codeBlock.title }}</h2>
   </div>
@@ -42,6 +42,12 @@
               [cbContent]="codeBlock.content">
         Copy code
       </button>
+      <button mat-button (click)="addNewCodeBlock()">
+        Save code
+      </button>
+      <button mat-button (click)="openCodeBlockInCompiler()">
+        Open code in compiler
+      </button>
     </mat-card-actions>
   </mat-card>
   <div class="estimates-tags-container">
@@ -49,8 +55,7 @@
       <mat-chip color="primary"
                 selected
                 *ngFor="let tag of tags"
-                (click)="searchByTag(tag.name)"
-                routerLink="">
+                (click)="searchByTag(tag.name)">
         {{ tag.name }}
       </mat-chip>
     </mat-chip-list>

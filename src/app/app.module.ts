@@ -36,6 +36,8 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import { CommentTimeSortPipe } from './pipe/comment-time-sort.pipe';
 import { CodeBlockEditComponent } from './component/ui/code-block-edit/code-block-edit.component';
 import { CodeBlockPageComponent } from './component/page/code-block-page/code-block-page.component';
+import {CompilerPageComponent} from "./component/page/compiler-page/compiler-page.component";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -56,7 +58,8 @@ import { CodeBlockPageComponent } from './component/page/code-block-page/code-bl
     CodeHighlightDirective,
     CommentTimeSortPipe,
     CodeBlockEditComponent,
-    CodeBlockPageComponent
+    CodeBlockPageComponent,
+    CompilerPageComponent
   ],
   imports: [
     BrowserModule,
@@ -77,7 +80,8 @@ import { CodeBlockPageComponent } from './component/page/code-block-page/code-bl
     ReactiveFormsModule,
     MatProgressBarModule,
     ClipboardModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
