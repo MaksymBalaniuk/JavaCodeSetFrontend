@@ -92,7 +92,7 @@ export class CodeBlockCardComponent implements OnInit, OnDestroy {
   }
 
   viewCodeBlock(): void {
-    this.dataLoadContextService.currentCodeBlock = this.codeBlock;
-    this.dataLoadContextService.loadContext = LoadContext.CODE_BLOCK_VIEW;
+    this.dataLoadContextService.setCurrentCodeBlock(this.codeBlock);
+    this.dataLoadContextService.setLoadContext(LoadContext.CODE_BLOCK_VIEW);
   }
 }

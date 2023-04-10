@@ -14,6 +14,7 @@ import {LoadContext} from "../../../enumeration/load-context";
 })
 export class MainPageComponent implements OnInit, OnDestroy {
 
+  selectedTabIndex = 0;
   addCodeBlockButtonVisible = false;
   currentUserPremiumLimits!: PremiumLimits;
   codeBlocks: Array<CodeBlockEntity> = [];
@@ -30,13 +31,17 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.currentUserPremiumLimitsSubscription$ =
       this.authenticationContextService.userPremiumLimits$.subscribe(premiumLimits => {
         this.currentUserPremiumLimits = premiumLimits;
-        if (this.dataLoadContextService.loadContext == LoadContext.CODE_BLOCK_VIEW ||
-          this.dataLoadContextService.loadContext == LoadContext.CODE_BLOCK_EDIT) {
+        if (this.dataLoadContextService.getLoadContext() == LoadContext.CODE_BLOCK_VIEW ||
+          this.dataLoadContextService.getLoadContext() == LoadContext.CODE_BLOCK_EDIT) {
           this.loadPubicContext();
         } else {
           this.dataLoadContextService.loadLastFilteredCodeBlocksContext();
         }
       });
+    this.setSelectedTabByLoadContext(this.dataLoadContextService.getLoadContext());
+    if (this.dataLoadContextService.getLoadContext() == LoadContext.PRIVATE_CODE_BLOCKS) {
+      this.addCodeBlockButtonVisible = this.isAddCodeBlockButtonAvailable();
+    }
   }
 
   ngOnDestroy(): void {
@@ -45,6 +50,16 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
     if (this.codeBlocksSubscription$ != undefined) {
       this.codeBlocksSubscription$.unsubscribe();
+    }
+  }
+
+  setSelectedTabByLoadContext(loadContext: LoadContext) {
+    if (loadContext == LoadContext.PUBLIC_CODE_BLOCKS) {
+      this.selectedTabIndex = 0;
+    } else if (loadContext == LoadContext.PRIVATE_CODE_BLOCKS) {
+      this.selectedTabIndex = 1;
+    } else if (loadContext == LoadContext.FAVORITES_CODE_BLOCKS) {
+      this.selectedTabIndex = 2;
     }
   }
 
@@ -81,12 +96,12 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   loadContext(loadContext: LoadContext): void {
-    this.dataLoadContextService.loadContext = loadContext;
+    this.dataLoadContextService.setLoadContext(loadContext);
     this.dataLoadContextService.loadLastFilteredCodeBlocksContext();
   }
 
   addNewCodeBlock(): void {
-    this.dataLoadContextService.currentCodeBlock = null;
-    this.dataLoadContextService.loadContext = LoadContext.CODE_BLOCK_EDIT;
+    this.dataLoadContextService.setCurrentCodeBlock(null);
+    this.dataLoadContextService.setLoadContext(LoadContext.CODE_BLOCK_EDIT);
   }
 }

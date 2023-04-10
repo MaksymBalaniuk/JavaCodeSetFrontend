@@ -3,6 +3,7 @@
   <mat-tab-group
     mat-stretch-tabs
     class="tabs"
+    [(selectedIndex)]="selectedTabIndex"
     (selectedTabChange)="tabChanged($event)"
     animationDuration="0ms">
     <mat-tab label="Public storage">

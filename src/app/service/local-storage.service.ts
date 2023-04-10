@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {UserDetails} from "../entity/user-details";
 import {PremiumLimits} from "../dto/premium-limits";
 import {UserPermissions} from "../dto/user-permissions";
+import {CodeBlockEntity} from "../entity/code-block-entity";
+import {LoadContext} from "../enumeration/load-context";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,8 @@ export class LocalStorageService {
   userDetailsKey = 'userDetails';
   premiumLimitsKey = 'premiumLimits';
   userPermissionsKey = 'userPermissions';
+  currentCodeBlockKey = 'currentCodeBlock';
+  loadContextKey = 'loadContext';
 
   constructor() { }
 
@@ -66,6 +70,37 @@ export class LocalStorageService {
       return null;
     } else {
       return JSON.parse(item);
+    }
+  }
+
+  setCurrentCodeBlock(currentCodeBlock: CodeBlockEntity): void {
+    localStorage.setItem(this.currentCodeBlockKey, JSON.stringify(currentCodeBlock));
+  }
+
+  getCurrentCodeBlock(): CodeBlockEntity | null {
+    const item = localStorage.getItem(this.currentCodeBlockKey);
+    if (item == null) {
+      return null;
+    } else {
+      return JSON.parse(item);
+    }
+  }
+
+  removeCurrentCodeBlock(): void {
+    localStorage.removeItem(this.currentCodeBlockKey);
+  }
+
+  setLoadContext(loadContext: LoadContext): void {
+    localStorage.setItem(this.loadContextKey, loadContext);
+  }
+
+  getLoadContext(): LoadContext {
+    const item = localStorage.getItem(this.loadContextKey);
+    if (item == null) {
+      return LoadContext.PUBLIC_CODE_BLOCKS;
+    } else {
+      const loadContextString = item as keyof typeof LoadContext;
+      return LoadContext[loadContextString];
     }
   }
 }

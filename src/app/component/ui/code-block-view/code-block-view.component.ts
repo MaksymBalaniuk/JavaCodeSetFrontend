@@ -112,8 +112,9 @@ export class CodeBlockViewComponent implements OnInit {
   }
 
   loadCodeBlock(): void {
-    if (this.dataLoadContextService.currentCodeBlock != null) {
-      this.codeBlock = this.dataLoadContextService.currentCodeBlock;
+    const codeBlock = this.dataLoadContextService.getCurrentCodeBlock();
+    if (codeBlock != null) {
+      this.codeBlock = codeBlock;
     }
   }
 
@@ -307,16 +308,16 @@ export class CodeBlockViewComponent implements OnInit {
       this.codeBlock.type = type;
       this.codeBlockService.updateCodeBlock(this.codeBlock, this.currentUserDetails.token)
         .subscribe(codeBlock => {
-          this.dataLoadContextService.currentCodeBlock = codeBlock;
-          this.dataLoadContextService.loadContext = LoadContext.CODE_BLOCK_VIEW;
+          this.dataLoadContextService.setCurrentCodeBlock(codeBlock);
+          this.dataLoadContextService.setLoadContext(LoadContext.CODE_BLOCK_VIEW);
         });
     }
   }
 
   editCodeBlock(): void {
     if (this.codeBlock != undefined) {
-      this.dataLoadContextService.currentCodeBlock = this.codeBlock;
-      this.dataLoadContextService.loadContext = LoadContext.CODE_BLOCK_EDIT;
+      this.dataLoadContextService.setCurrentCodeBlock(this.codeBlock);
+      this.dataLoadContextService.setLoadContext(LoadContext.CODE_BLOCK_EDIT);
     }
   }
 
@@ -328,8 +329,8 @@ export class CodeBlockViewComponent implements OnInit {
       this.deleteCodeBlockSubscription$ =
         this.codeBlockService.deleteCodeBlock(this.codeBlock.id, this.currentUserDetails.token)
           .subscribe(() => {
-            this.dataLoadContextService.currentCodeBlock = null;
-            this.dataLoadContextService.loadContext = LoadContext.PUBLIC_CODE_BLOCKS;
+            this.dataLoadContextService.setCurrentCodeBlock(null);
+            this.dataLoadContextService.setLoadContext(LoadContext.PUBLIC_CODE_BLOCKS);
             this.router.navigateByUrl('').then();
           });
     }
@@ -347,7 +348,7 @@ export class CodeBlockViewComponent implements OnInit {
         {name: 'Content', completed: false}
       ]
     });
-    this.dataLoadContextService.currentCodeBlock = null;
-    this.dataLoadContextService.loadContext = LoadContext.PUBLIC_CODE_BLOCKS;
+    this.dataLoadContextService.setCurrentCodeBlock(null);
+    this.dataLoadContextService.setLoadContext(LoadContext.PUBLIC_CODE_BLOCKS);
   }
 }

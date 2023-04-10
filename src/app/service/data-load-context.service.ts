@@ -12,16 +12,16 @@ import {FilterCodeBlockTask} from "../entity/filter-code-block-task";
 import {FilterCodeBlock} from "../dto/filter-code-block";
 import {ShareEntity} from "../entity/share-entity";
 import {ShareService} from "./api/share.service";
+import {LocalStorageService} from "./local-storage.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataLoadContextService {
 
-  loadContext = LoadContext.PUBLIC_CODE_BLOCKS;
+  private loadContext = LoadContext.PUBLIC_CODE_BLOCKS;
+  private currentCodeBlock!: CodeBlockEntity | null;
   userDetails!: UserDetails;
-  currentCodeBlock!: CodeBlockEntity | null;
-  codeBlockContentClipboard = '';
   codeBlocks$ = new Subject<Array<CodeBlockEntity>>();
   shares$ = new Subject<Array<ShareEntity>>();
 
@@ -33,11 +33,49 @@ export class DataLoadContextService {
   constructor(private searchService: SearchService,
               private codeBlockService: CodeBlockService,
               private shareService: ShareService,
-              private authenticationContextService: AuthenticationContextService) {
+              private authenticationContextService: AuthenticationContextService,
+              private localStorageService: LocalStorageService) {
     authenticationContextService.userDetails$.subscribe(userDetails => {
       this.userDetails = userDetails;
+      const localLoadContext = this.localStorageService.getLoadContext();
+      const localCurrentCodeBlock = this.localStorageService.getCurrentCodeBlock();
+      if (userDetails.user == null) {
+        if (localLoadContext == LoadContext.CODE_BLOCK_EDIT ||
+          localLoadContext == LoadContext.CODE_BLOCK_VIEW) {
+          if (localCurrentCodeBlock == null) {
+            this.setLoadContext(LoadContext.PUBLIC_CODE_BLOCKS);
+          } else {
+            this.setLoadContext(LoadContext.CODE_BLOCK_VIEW);
+          }
+        }
+      } else {
+        this.setLoadContext(localLoadContext);
+      }
+      this.setCurrentCodeBlock(localCurrentCodeBlock);
       this.loadLastFilteredCodeBlocksContext();
     });
+  }
+
+  setLoadContext(loadContext: LoadContext): void {
+    this.loadContext = loadContext;
+    this.localStorageService.setLoadContext(loadContext);
+  }
+
+  getLoadContext(): LoadContext {
+    return this.loadContext;
+  }
+
+  setCurrentCodeBlock(currentCodeBlock: CodeBlockEntity | null): void {
+    this.currentCodeBlock = currentCodeBlock;
+    if (currentCodeBlock == null) {
+      this.localStorageService.removeCurrentCodeBlock();
+    } else {
+      this.localStorageService.setCurrentCodeBlock(currentCodeBlock);
+    }
+  }
+
+  getCurrentCodeBlock(): CodeBlockEntity | null {
+    return this.currentCodeBlock;
   }
 
   loadLastFilteredCodeBlocksContext(): void {
