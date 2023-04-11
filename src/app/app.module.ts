@@ -38,6 +38,7 @@ import { CodeBlockEditComponent } from './component/ui/code-block-edit/code-bloc
 import { CodeBlockPageComponent } from './component/page/code-block-page/code-block-page.component';
 import {CompilerPageComponent} from "./component/page/compiler-page/compiler-page.component";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { PremiumPageComponent } from './component/page/premium-page/premium-page.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     CommentTimeSortPipe,
     CodeBlockEditComponent,
     CodeBlockPageComponent,
-    CompilerPageComponent
+    CompilerPageComponent,
+    PremiumPageComponent
   ],
   imports: [
     BrowserModule,
