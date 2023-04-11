@@ -1,6 +1,6 @@
 export interface RegisterResponse {
-  existByUsername: boolean;
-  existByEmail: boolean;
+  existsByUsername: boolean;
+  existsByEmail: boolean;
   token: string;
   id: string;
 }

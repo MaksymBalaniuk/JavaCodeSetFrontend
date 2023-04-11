@@ -119,6 +119,7 @@ export class RegistrationFormComponent implements OnInit {
     if (this.successValidation()) {
       this.loading = true;
       this.success = true;
+      this.errorMessage = '';
 
       this.registerSubscription$ = this.authenticationService.register({
         username: this.username.value,
@@ -135,12 +136,12 @@ export class RegistrationFormComponent implements OnInit {
           this.errorMessage = error;
           this.success = false;
         } else {
-          if (this.registerResponse.existByUsername) {
+          if (this.registerResponse.existsByUsername) {
             this.errorMessage = 'This username is already taken';
             this.success = false;
             return;
           }
-          if (this.registerResponse.existByEmail) {
+          if (this.registerResponse.existsByEmail) {
             this.errorMessage = 'User with this email already exists';
             this.success = false;
             return;
