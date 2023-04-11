@@ -14,6 +14,7 @@ import {ShareEntity} from "../entity/share-entity";
 import {ShareService} from "./api/share.service";
 import {LocalStorageService} from "./local-storage.service";
 import {TagEntity} from "../entity/tag-entity";
+import {NavigationService} from "./navigation.service";
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +38,8 @@ export class DataLoadContextService {
               private codeBlockService: CodeBlockService,
               private shareService: ShareService,
               private authenticationContextService: AuthenticationContextService,
-              private localStorageService: LocalStorageService) {
+              private localStorageService: LocalStorageService,
+              private navigationService: NavigationService) {
     authenticationContextService.userDetails$.subscribe(userDetails => {
       this.userDetails = userDetails;
       const localLoadContext = this.localStorageService.getLoadContext();
@@ -47,6 +49,7 @@ export class DataLoadContextService {
           localLoadContext == LoadContext.CODE_BLOCK_VIEW) {
           if (localCurrentCodeBlock == null) {
             this.setLoadContext(LoadContext.PUBLIC_CODE_BLOCKS);
+            navigationService.redirectToMainPage();
           } else {
             this.setLoadContext(LoadContext.CODE_BLOCK_VIEW);
           }
