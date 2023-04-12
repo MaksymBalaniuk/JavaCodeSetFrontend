@@ -5,6 +5,7 @@ import {UserPremium} from "../../../enumeration/user-premium";
 import {PremiumLimits} from "../../../dto/premium-limits";
 import {Subscription} from "rxjs";
 import {UserDetails} from "../../../entity/user-details";
+import {NavigationService} from "../../../service/navigation.service";
 
 @Component({
   selector: 'app-premium-page',
@@ -24,11 +25,15 @@ export class PremiumPageComponent implements OnInit, OnDestroy {
   unlimitedUserPremiumLimitsSubscription$!: Subscription;
 
   constructor(public authenticationContextService: AuthenticationContextService,
-              private userService: UserService) { }
+              private userService: UserService,
+              private navigationService: NavigationService) { }
 
   ngOnInit(): void {
     this.userDetailsSubscription$ = this.authenticationContextService.userDetails$
       .subscribe(userDetails => {
+        if (userDetails.user == null) {
+          this.navigationService.redirectToMainPage();
+        }
         this.currentUserDetails = userDetails;
         this.noneUserPremiumLimitsSubscription$ = this.userService
           .getPremiumLimitsByUserPremium(UserPremium.NONE, userDetails.token)

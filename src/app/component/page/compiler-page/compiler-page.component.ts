@@ -52,6 +52,8 @@ export class CompilerPageComponent implements OnInit, OnDestroy {
           this.userCodeBlocksSubscription$ = this.codeBlockService
             .getAllCodeBlocksByUserId(userDetails.user.id, userDetails.token)
             .subscribe(codeBlocks => this.userCodeBlocksCount = codeBlocks.length);
+        } else if (userDetails != null && userDetails.user == null) {
+          this.navigationService.redirectToMainPage();
         }
       });
     this.userPremiumLimitsSubscription$ = this.authenticationContextService.userPremiumLimits$
