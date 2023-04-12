@@ -71,9 +71,19 @@ export class CodeBlockService {
   }
 
   getAllFilteredCodeBlocksByUserIdAndEstimateType(
-    userId: string, token: string, estimateType: EstimateType, filterCodeBlock: FilterCodeBlock) {
+    userId: string, token: string, estimateType: EstimateType, filterCodeBlock: FilterCodeBlock): Observable<Array<CodeBlockEntity>> {
     return this.http.post<Array<CodeBlockEntity>>(
       `${this.networkService.getAddress()}/api/blocks/get-all/by-user-id-and-estimate-type/${userId}/${estimateType}/filtered`,
+      filterCodeBlock, { headers: { Authorization: token }})
+      .pipe(
+        catchError(error => this.errorHandle(error))
+      );
+  }
+
+  getAllFilteredCodeBlocksSharedFromUserIdToUserId(
+    fromUserId: string, toUserId: string, token: string, filterCodeBlock: FilterCodeBlock): Observable<Array<CodeBlockEntity>> {
+    return this.http.post<Array<CodeBlockEntity>>(
+      `${this.networkService.getAddress()}/api/blocks/get-all/shared-from-user-id-to-user-id/${fromUserId}/${toUserId}/filtered`,
       filterCodeBlock, { headers: { Authorization: token }})
       .pipe(
         catchError(error => this.errorHandle(error))
