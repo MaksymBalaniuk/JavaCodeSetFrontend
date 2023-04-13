@@ -29,7 +29,7 @@ export class DataLoadContextService {
   userDetails!: UserDetails;
   codeBlocks$ = new Subject<Array<CodeBlockEntity>>();
   shares$ = new Subject<Array<ShareEntity>>();
-  currentFromUserShares!: UserEntity;
+  currentFromUserShares: UserEntity | null = null;
 
   getAllFilteredCodeBlocksSubscription$!: Subscription;
   getAllFilteredCodeBlocksByUserIdSubscription$!: Subscription;
@@ -48,6 +48,7 @@ export class DataLoadContextService {
       const localLoadContext = this.localStorageService.getLoadContext();
       const localCurrentCodeBlock = this.localStorageService.getCurrentCodeBlock();
       if (userDetails.user == null) {
+        this.currentFromUserShares = null;
         if (localLoadContext == LoadContext.CODE_BLOCK_EDIT ||
           localLoadContext == LoadContext.CODE_BLOCK_VIEW) {
           if (localCurrentCodeBlock == null) {
@@ -151,7 +152,7 @@ export class DataLoadContextService {
         .subscribe(shares => {
           this.codeBlocks$.next([]);
           this.shares$.next(shares);
-          if (this.currentFromUserShares != undefined) {
+          if (this.currentFromUserShares != null) {
             this.loadFilteredCodeBlocksSharedFromUserId(this.currentFromUserShares.id);
           }
         });

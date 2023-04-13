@@ -41,7 +41,7 @@
     <mat-tab label="Shared storage"
              *ngIf="authenticationContextService.isAuthorized$ | async">
       <ng-template matTabContent>
-        <div class="chip-list-container">
+        <div class="chip-list-container" *ngIf="fromUserShares.length > 0">
           <mat-chip-list>
             <mat-chip color="primary"
                       *ngFor="let user of fromUserShares"

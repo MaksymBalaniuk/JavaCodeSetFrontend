@@ -158,7 +158,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
       if (tempArray.length == fromUserIdShares.length) {
         this.fromUserShares = tempArray.sort(
           (a, b) => a.username.localeCompare(b.username));
-        if (this.dataLoadContextService.currentFromUserShares == undefined) {
+        if (this.dataLoadContextService.currentFromUserShares == null) {
           this.changeSelectedUser(this.fromUserShares[0]);
         }
       }
@@ -177,6 +177,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   isShareChipSelected(userEntity: UserEntity) {
-    return this.dataLoadContextService.currentFromUserShares.username == userEntity.username;
+    return this.dataLoadContextService.currentFromUserShares != null &&
+      this.dataLoadContextService.currentFromUserShares.username == userEntity.username;
   }
 }
