@@ -15,6 +15,7 @@ import {ShareService} from "./api/share.service";
 import {LocalStorageService} from "./local-storage.service";
 import {TagEntity} from "../entity/tag-entity";
 import {NavigationService} from "./navigation.service";
+import {UserEntity} from "../entity/user-entity";
 
 @Injectable({
   providedIn: 'root'
@@ -28,11 +29,13 @@ export class DataLoadContextService {
   userDetails!: UserDetails;
   codeBlocks$ = new Subject<Array<CodeBlockEntity>>();
   shares$ = new Subject<Array<ShareEntity>>();
+  currentFromUserShares!: UserEntity;
 
   getAllFilteredCodeBlocksSubscription$!: Subscription;
   getAllFilteredCodeBlocksByUserIdSubscription$!: Subscription;
   getAllFilteredCodeBlocksByUserIdAndEstimateTypeSubscription$!: Subscription;
   getAllSharesToUserIdSubscription$!: Subscription;
+  getAllFilteredCodeBlocksSharedFromUserIdToUserIdSubscription$!: Subscription;
 
   constructor(private searchService: SearchService,
               private codeBlockService: CodeBlockService,
@@ -107,7 +110,7 @@ export class DataLoadContextService {
         CodeBlockType.PUBLIC, CodeBlockType.PRIVATE, CodeBlockType.HIDDEN);
     } else if (this.loadContext == LoadContext.FAVORITES_CODE_BLOCKS) {
       this.loadFilteredCodeBlocksByUserIdAndEstimateType(this.userDetails,
-        EstimateType.LIKE, CodeBlockType.PUBLIC, CodeBlockType.PRIVATE);
+        EstimateType.LIKE, CodeBlockType.PUBLIC, CodeBlockType.PRIVATE, CodeBlockType.HIDDEN);
     } else if (this.loadContext == LoadContext.SHARED_CODE_BLOCKS) {
       this.loadSharesToUserId(this.userDetails);
     }
@@ -145,7 +148,29 @@ export class DataLoadContextService {
     if (userDetails.user != null && userDetails.token != '') {
       this.getAllSharesToUserIdSubscription$ = this.shareService.getAllSharesToUserId(
         userDetails.user.id, userDetails.token)
-        .subscribe(shares => this.shares$.next(shares));
+        .subscribe(shares => {
+          this.codeBlocks$.next([]);
+          this.shares$.next(shares);
+          if (this.currentFromUserShares != undefined) {
+            this.loadFilteredCodeBlocksSharedFromUserId(this.currentFromUserShares.id);
+          }
+        });
+    }
+  }
+
+  loadFilteredCodeBlocksSharedFromUserId(fromUserId: string): void {
+    this.loadFilteredCodeBlocksSharedFromUserIdToUserId(
+      fromUserId, this.userDetails, CodeBlockType.PRIVATE, CodeBlockType.PUBLIC, CodeBlockType.HIDDEN);
+  }
+
+  loadFilteredCodeBlocksSharedFromUserIdToUserId(
+    fromUserId: string, userDetails: UserDetails, ...codeBlockTypes: Array<CodeBlockType>): void {
+    if (userDetails.user != null && userDetails.token != '') {
+      this.getAllFilteredCodeBlocksSharedFromUserIdToUserIdSubscription$ = this.codeBlockService
+        .getAllFilteredCodeBlocksSharedFromUserIdToUserId(fromUserId, userDetails.user.id, userDetails.token,
+          this.mapToFilterCodeBlock(
+            this.searchService.filterQuery$.value, this.searchService.filterCodeBlockTask$.value, codeBlockTypes))
+        .subscribe(codeBlocks => this.codeBlocks$.next(codeBlocks));
     }
   }
 

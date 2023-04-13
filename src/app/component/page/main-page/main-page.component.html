@@ -18,7 +18,7 @@
     </mat-tab>
     <mat-tab label="Private storage"
              *ngIf="authenticationContextService.isAuthorized$ | async">
-      <ng-template matTabContent >
+      <ng-template matTabContent>
         <div class="code-blocks-container">
           <app-code-block-card
             *ngFor="let codeBlock of codeBlocks | codeBlockTimeSort | codeBlockPaginator"
@@ -29,7 +29,28 @@
     </mat-tab>
     <mat-tab label="Favorites storage"
              *ngIf="authenticationContextService.isAuthorized$ | async">
-      <ng-template matTabContent >
+      <ng-template matTabContent>
+        <div class="code-blocks-container">
+          <app-code-block-card
+            *ngFor="let codeBlock of codeBlocks | codeBlockTimeSort | codeBlockPaginator"
+            [codeBlock]="codeBlock">
+          </app-code-block-card>
+        </div>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Shared storage"
+             *ngIf="authenticationContextService.isAuthorized$ | async">
+      <ng-template matTabContent>
+        <div class="chip-list-container">
+          <mat-chip-list>
+            <mat-chip color="primary"
+                      *ngFor="let user of fromUserShares"
+                      [selected]="isShareChipSelected(user)"
+                      (click)="changeSelectedUser(user)">
+              {{ user.username }}
+            </mat-chip>
+          </mat-chip-list>
+        </div>
         <div class="code-blocks-container">
           <app-code-block-card
             *ngFor="let codeBlock of codeBlocks | codeBlockTimeSort | codeBlockPaginator"
