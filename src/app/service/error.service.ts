@@ -17,6 +17,7 @@ export class ErrorService {
   handle(error: HttpErrorResponse): void {
     if (this.determineErrorType(error.error)) {
       if (error.error.message == 'JWT is expired') {
+        this.modalService.hideForm();
         this.modalService.showSessionExpiredForm();
       } else {
         this.error$.next(error.error.message);

@@ -19,6 +19,7 @@ import {EstimateType} from "../../../enumeration/estimate-type";
 import {CodeBlockType} from "../../../enumeration/code-block-type";
 import {LoadContext} from "../../../enumeration/load-context";
 import {NavigationService} from "../../../service/navigation.service";
+import {ModalService} from "../../../service/modal.service";
 
 @Component({
   selector: 'app-code-block-view',
@@ -62,7 +63,8 @@ export class CodeBlockViewComponent implements OnInit {
               private tagService: TagService,
               private codeBlockService: CodeBlockService,
               private searchService: SearchService,
-              private navigationService: NavigationService) { }
+              private navigationService: NavigationService,
+              private modalService: ModalService) { }
 
   ngOnInit(): void {
     this.loadCurrentUserAndPrimaryData();
@@ -300,6 +302,10 @@ export class CodeBlockViewComponent implements OnInit {
 
   hideCodeBlock(): void {
     this.updateCodeBlockType(CodeBlockType.HIDDEN);
+  }
+
+  shareCodeBlock(): void {
+    this.modalService.showShareForm();
   }
 
   updateCodeBlockType(type: CodeBlockType): void {

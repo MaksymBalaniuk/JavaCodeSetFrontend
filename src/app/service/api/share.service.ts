@@ -32,6 +32,15 @@ export class ShareService {
       );
   }
 
+  getAllSharesFromUserId(userId: string, token: string): Observable<Array<ShareEntity>> {
+    return this.http.get<Array<ShareEntity>>(
+      `${this.networkService.getAddress()}/api/shares/get-all/from-user/${userId}`,
+      { headers: { Authorization: token }})
+      .pipe(
+        catchError(error => this.errorHandle(error))
+      );
+  }
+
   private errorHandle(error: HttpErrorResponse): Observable<never> {
     this.errorService.handle(error);
     return throwError(() => error.message);

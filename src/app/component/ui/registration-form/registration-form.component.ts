@@ -120,6 +120,7 @@ export class RegistrationFormComponent implements OnInit {
       this.loading = true;
       this.success = true;
       this.errorMessage = '';
+      let registerProcess = true;
 
       this.registerSubscription$ = this.authenticationService.register({
         username: this.username.value,
@@ -135,7 +136,8 @@ export class RegistrationFormComponent implements OnInit {
         if (error != '') {
           this.errorMessage = error;
           this.success = false;
-        } else {
+        } else if (registerProcess) {
+          registerProcess = false;
           if (this.registerResponse.existsByUsername) {
             this.errorMessage = 'This username is already taken';
             this.success = false;
@@ -150,6 +152,7 @@ export class RegistrationFormComponent implements OnInit {
             token: this.registerResponse.token,
             id: this.registerResponse.id
           });
+          this.errorService.clear();
           this.modalService.hideForm();
         }
       });

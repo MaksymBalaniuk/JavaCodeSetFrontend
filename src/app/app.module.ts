@@ -39,6 +39,9 @@ import { CodeBlockPageComponent } from './component/page/code-block-page/code-bl
 import {CompilerPageComponent} from "./component/page/compiler-page/compiler-page.component";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { PremiumPageComponent } from './component/page/premium-page/premium-page.component';
+import { ShareFormComponent } from './component/ui/share-form/share-form.component';
+import {MatSelectModule} from "@angular/material/select";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 @NgModule({
   declarations: [
@@ -61,7 +64,8 @@ import { PremiumPageComponent } from './component/page/premium-page/premium-page
     CodeBlockEditComponent,
     CodeBlockPageComponent,
     CompilerPageComponent,
-    PremiumPageComponent
+    PremiumPageComponent,
+    ShareFormComponent
   ],
   imports: [
     BrowserModule,
@@ -83,7 +87,9 @@ import { PremiumPageComponent } from './component/page/premium-page/premium-page
     MatProgressBarModule,
     ClipboardModule,
     MatExpansionModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatAutocompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]

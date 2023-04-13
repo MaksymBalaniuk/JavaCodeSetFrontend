@@ -40,7 +40,7 @@
     </mat-form-field>
   </div>
   <div>
-    <mat-error *ngIf="!success">{{ errorMessage }}</mat-error>
+    <mat-error class="bottom-mat-error-text" *ngIf="!success">{{ errorMessage }}</mat-error>
   </div>
   <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
   <button mat-raised-button color="primary" type="submit">Sign up</button>

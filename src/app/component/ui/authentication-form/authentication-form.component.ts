@@ -98,6 +98,7 @@ export class AuthenticationFormComponent implements OnInit {
       this.loading = true;
       this.success = true;
       this.errorMessage = '';
+      let authenticationProcess = true;
 
       this.authenticationSubscription$ = this.authenticationService.login({
         username: this.username.value,
@@ -112,8 +113,10 @@ export class AuthenticationFormComponent implements OnInit {
         if (error != '') {
           this.errorMessage = error;
           this.success = false;
-        } else {
+        } else if (authenticationProcess) {
+          authenticationProcess = false;
           this.authenticationContextService.login(this.authenticationResponse);
+          this.errorService.clear();
           this.modalService.hideForm();
         }
       });

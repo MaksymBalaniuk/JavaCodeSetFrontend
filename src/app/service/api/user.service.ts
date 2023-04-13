@@ -25,6 +25,14 @@ export class UserService {
       );
   }
 
+  getUserByUsername(username: string): Observable<UserEntity> {
+    return this.http.get<UserEntity>(
+      `${this.networkService.getAddress()}/api/users/get/by-username/${username}`)
+      .pipe(
+        catchError(error => this.errorHandle(error))
+      );
+  }
+
   getUserPremiumLimits(userId: string, token: string): Observable<PremiumLimits> {
     return this.http.get<PremiumLimits>(
       `${this.networkService.getAddress()}/api/users/get/${userId}/premium-limits`,
