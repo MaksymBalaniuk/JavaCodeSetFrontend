@@ -44,12 +44,13 @@ export class MainPageComponent implements OnInit, OnDestroy {
         this.currentUserPremiumLimits = premiumLimits;
         if (this.dataLoadContextService.getLoadContext() == LoadContext.CODE_BLOCK_VIEW ||
           this.dataLoadContextService.getLoadContext() == LoadContext.CODE_BLOCK_EDIT) {
+          this.setSelectedTabByLoadContext(LoadContext.PUBLIC_CODE_BLOCKS);
           this.loadPubicContext();
         } else {
+          this.setSelectedTabByLoadContext(this.dataLoadContextService.getLoadContext());
           this.dataLoadContextService.loadLastFilteredCodeBlocksContext();
         }
       });
-    this.setSelectedTabByLoadContext(this.dataLoadContextService.getLoadContext());
     if (this.dataLoadContextService.getLoadContext() == LoadContext.PRIVATE_CODE_BLOCKS) {
       this.addCodeBlockButtonVisible = this.isAddCodeBlockButtonAvailable();
     }
