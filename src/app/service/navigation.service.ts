@@ -27,6 +27,8 @@ export class NavigationService {
       this.currentPage$.next(CurrentPage.PREMIUM);
     } else if (url == '/code-block') {
       this.currentPage$.next(CurrentPage.CODE_BLOCK);
+    } else if (url == '/profile') {
+      this.currentPage$.next(CurrentPage.PROFILE);
     }
   }
 
@@ -44,5 +46,9 @@ export class NavigationService {
 
   redirectToCodeBlockPage(): void {
     this.router.navigateByUrl('code-block').then();
+  }
+
+  redirectToProfilePage(): void {
+    this.router.navigateByUrl('profile').then();
   }
 }

@@ -55,6 +55,10 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
     return this.currentPage == CurrentPage.PREMIUM;
   }
 
+  isProfilePageCurrent(): boolean {
+    return this.currentPage == CurrentPage.PROFILE;
+  }
+
   redirectToMainPage(): void {
     this.navigationService.redirectToMainPage();
   }
@@ -65,5 +69,9 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
 
   redirectToPremiumPage(): void {
     this.navigationService.redirectToPremiumPage();
+  }
+
+  redirectToProfilePage(): void {
+    this.navigationService.redirectToProfilePage();
   }
 }

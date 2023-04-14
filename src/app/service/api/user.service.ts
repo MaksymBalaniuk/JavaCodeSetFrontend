@@ -33,6 +33,14 @@ export class UserService {
       );
   }
 
+  searchUsersByUsername(username: string): Observable<Array<UserEntity>> {
+    return this.http.get<Array<UserEntity>>(
+      `${this.networkService.getAddress()}/api/users/get-all/by-username/${username}`)
+      .pipe(
+        catchError(error => this.errorHandle(error))
+      );
+  }
+
   getUserPremiumLimits(userId: string, token: string): Observable<PremiumLimits> {
     return this.http.get<PremiumLimits>(
       `${this.networkService.getAddress()}/api/users/get/${userId}/premium-limits`,
@@ -54,6 +62,24 @@ export class UserService {
   updateUserPremiumById(userId: string, userPremium: UserPremium, token: string): Observable<AuthenticationResponse> {
     return this.http.patch<AuthenticationResponse>(
       `${this.networkService.getAddress()}/api/users/update/${userId}/user-premium/${userPremium}`,
+      {}, { headers: { Authorization: token }})
+      .pipe(
+        catchError(error => this.errorHandle(error))
+      );
+  }
+
+  activateUserById(userId: string, token: string): Observable<UserEntity> {
+    return this.http.patch<UserEntity>(
+      `${this.networkService.getAddress()}/api/users/update/${userId}/activate`,
+      {}, { headers: { Authorization: token }})
+      .pipe(
+        catchError(error => this.errorHandle(error))
+      );
+  }
+
+  banUserById(userId: string, token: string): Observable<UserEntity> {
+    return this.http.patch<UserEntity>(
+      `${this.networkService.getAddress()}/api/users/update/${userId}/ban`,
       {}, { headers: { Authorization: token }})
       .pipe(
         catchError(error => this.errorHandle(error))

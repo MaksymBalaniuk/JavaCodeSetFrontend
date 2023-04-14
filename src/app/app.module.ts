@@ -42,6 +42,8 @@ import { PremiumPageComponent } from './component/page/premium-page/premium-page
 import { ShareFormComponent } from './component/ui/share-form/share-form.component';
 import {MatSelectModule} from "@angular/material/select";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import { ProfilePageComponent } from './component/page/profile-page/profile-page.component';
+import { ProfileCardComponent } from './component/ui/profile-card/profile-card.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,9 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     CodeBlockPageComponent,
     CompilerPageComponent,
     PremiumPageComponent,
-    ShareFormComponent
+    ShareFormComponent,
+    ProfilePageComponent,
+    ProfileCardComponent
   ],
   imports: [
     BrowserModule,

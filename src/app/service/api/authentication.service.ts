@@ -7,6 +7,7 @@ import {catchError, Observable, throwError} from "rxjs";
 import {AuthenticationResponse} from "../../dto/authentication-response";
 import {RegisterRequest} from "../../dto/register-request";
 import {RegisterResponse} from "../../dto/register-response";
+import {UserEntity} from "../../entity/user-entity";
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,15 @@ export class AuthenticationService {
   register(registerRequest: RegisterRequest): Observable<RegisterResponse> {
     return this.http.post<RegisterResponse>(
       `${this.networkService.getAddress()}/api/auth/register`, registerRequest)
+      .pipe(
+        catchError(error => this.errorHandle(error))
+      );
+  }
+
+  getAuthenticatedUser(token: string): Observable<UserEntity> {
+    return this.http.get<UserEntity>(
+      `${this.networkService.getAddress()}/api/auth/get/authenticated-user`,
+      { headers: { Authorization: token }})
       .pipe(
         catchError(error => this.errorHandle(error))
       );
