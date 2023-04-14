@@ -20,7 +20,7 @@ import {NavigationService} from "../../../service/navigation.service";
 })
 export class CompilerPageComponent implements OnInit, OnDestroy {
 
-  compilerContent = 'public static void main(String[] args) {\n        System.out.println("Hello world!");\n}';
+  compilerContent = 'public static void main(String[] args) {\n    System.out.println("Hello world!");\n}';
   argsContent = '';
   errorMessage = '';
   exitCode!: number;
@@ -181,11 +181,8 @@ export class CompilerPageComponent implements OnInit, OnDestroy {
     '}\n\n' +
     '2. The wrapper class must contain an entry point (main method) with a strong signature, ' +
     'for example: \n\n' +
-    'imports... \n\n' +
-    'public class Main { \n' +
-    '    public static void main(String[] args) {\n' +
-    '        System.out.println(\"Hello world!\");\n' +
-    '    }\n' +
+    'public static void main(String[] args) {\n' +
+    '    System.out.println(\"Hello world!\");\n' +
     '}\n\n' +
     '3. Code should not contain a method \'System.exit()\', ' +
     'so the use of the \'exit\' keyword is prohibited.\n\n' +

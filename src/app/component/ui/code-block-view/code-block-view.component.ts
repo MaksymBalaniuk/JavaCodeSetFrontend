@@ -336,7 +336,7 @@ export class CodeBlockViewComponent implements OnInit {
         this.codeBlockService.deleteCodeBlock(this.codeBlock.id, this.currentUserDetails.token)
           .subscribe(() => {
             this.dataLoadContextService.setCurrentCodeBlock(null);
-            this.dataLoadContextService.setLoadContext(LoadContext.PUBLIC_CODE_BLOCKS);
+            this.dataLoadContextService.setLoadContext(LoadContext.PRIVATE_CODE_BLOCKS);
             this.navigationService.redirectToMainPage();
           });
     }
