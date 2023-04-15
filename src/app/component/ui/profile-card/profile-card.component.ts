@@ -1,12 +1,13 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {UserEntity} from "../../../entity/user-entity";
 import {Subscription} from "rxjs";
-import {AuthenticationService} from "../../../service/api/authentication.service";
 import {UserPremium} from "../../../enumeration/user-premium";
 import {AuthenticationContextService} from "../../../service/authentication-context.service";
 import {UserDetails} from "../../../entity/user-details";
 import {UserPermissions} from "../../../dto/user-permissions";
 import {UserService} from "../../../service/api/user.service";
+import {AuthorityService} from "../../../service/api/authority.service";
+import {ModalService} from "../../../service/modal.service";
 
 @Component({
   selector: 'app-profile-card',
@@ -16,30 +17,35 @@ import {UserService} from "../../../service/api/user.service";
 export class ProfileCardComponent implements OnInit, OnDestroy {
 
   @Input() user!: UserEntity | null;
-  @Input() token!: string;
   @Input() marginTop: string = '0px';
   currentUserDetails!: UserDetails;
   currentUserPermissions!: UserPermissions;
+  isUserAdmin = false;
 
   getAuthenticatedUserSubscription$!: Subscription;
   currentUserDetailsSubscription$!: Subscription;
   currentUserPermissionsSubscription$!: Subscription;
+  isUserHasAdminAuthoritySubscription$!: Subscription;
   activateUserByIdSubscription$!: Subscription;
   banUserByIdSubscription$!: Subscription;
 
-  constructor(private authenticationService: AuthenticationService,
-              private authenticationContextService: AuthenticationContextService,
-              private userService: UserService) { }
+  constructor(private authenticationContextService: AuthenticationContextService,
+              private userService: UserService,
+              private authorityService: AuthorityService,
+              public modalService: ModalService) { }
 
   ngOnInit(): void {
     this.currentUserDetailsSubscription$ = this.authenticationContextService.userDetails$
-      .subscribe(userDetails => this.currentUserDetails = userDetails);
+      .subscribe(userDetails => {
+        this.currentUserDetails = userDetails;
+        if (this.user?.id == userDetails.user?.id) {
+          this.getAuthenticatedUserSubscription$ = this.userService.getAuthenticatedUser(userDetails.token)
+            .subscribe(userEntity => this.user = userEntity);
+        }
+      });
     this.currentUserPermissionsSubscription$ = this.authenticationContextService.userPermissions$
       .subscribe(userPermissions => this.currentUserPermissions = userPermissions);
-    if (this.token != undefined && this.token != '') {
-      this.getAuthenticatedUserSubscription$ = this.authenticationService.getAuthenticatedUser(this.token)
-        .subscribe(userEntity => this.user = userEntity);
-    }
+    this.updateUserRole();
   }
 
   ngOnDestroy(): void {
@@ -52,12 +58,19 @@ export class ProfileCardComponent implements OnInit, OnDestroy {
     if (this.getAuthenticatedUserSubscription$ != undefined) {
       this.getAuthenticatedUserSubscription$.unsubscribe();
     }
+    if (this.isUserHasAdminAuthoritySubscription$ != undefined) {
+      this.isUserHasAdminAuthoritySubscription$.unsubscribe();
+    }
     if (this.activateUserByIdSubscription$ != undefined) {
       this.activateUserByIdSubscription$.unsubscribe();
     }
     if (this.banUserByIdSubscription$ != undefined) {
       this.banUserByIdSubscription$.unsubscribe();
     }
+  }
+
+  getRole(): string {
+    return this.isUserAdmin ? 'administrator' : 'user';
   }
 
   getUserStatus(): string {
@@ -91,12 +104,35 @@ export class ProfileCardComponent implements OnInit, OnDestroy {
     return this.currentUserDetails != null &&
       this.currentUserDetails.user != null &&
       this.user != null &&
-      this.currentUserDetails.user.id != this.user.id &&
-      this.currentUserPermissions.userBanPermission;
+      this.currentUserDetails.user.id != this.user.id;
+  }
+
+  isChangeActionAvailable(): boolean {
+    return this.currentUserDetails != null &&
+      this.currentUserDetails.user != null &&
+      this.user != null &&
+      this.currentUserDetails.user.id == this.user.id;
   }
 
   isBanActionAvailable(): boolean {
     return this.currentUserPermissions.userBanPermission;
+  }
+
+  updateUserRole(): void {
+    const currentUserDetails = this.currentUserDetails;
+    if (this.user != null) {
+      if (this.isUserHasAdminAuthoritySubscription$ != undefined) {
+        this.isUserHasAdminAuthoritySubscription$.unsubscribe();
+      }
+
+      this.isUserHasAdminAuthoritySubscription$ = this.authorityService
+        .isUserHasAdminAuthority(this.user.id, currentUserDetails.token)
+        .subscribe(booleanValue => this.isUserAdmin = booleanValue);
+    }
+  }
+
+  changeProfile(): void {
+    this.modalService.showUpdateProfileForm();
   }
 
   activateUser(): void {

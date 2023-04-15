@@ -14,6 +14,15 @@ export class AuthorityService {
               private errorService: ErrorService,
               private networkService: NetworkService) { }
 
+  isUserHasAdminAuthority(userId: string, token: string): Observable<boolean> {
+    return this.http.get<boolean>(
+      `${this.networkService.getAddress()}/api/authorities/get/${userId}/is-admin`,
+      { headers: { Authorization: token }})
+      .pipe(
+        catchError(error => this.errorHandle(error))
+      );
+  }
+
   getUserPermissions(userId: string, token: string): Observable<UserPermissions> {
     return this.http.get<UserPermissions>(
       `${this.networkService.getAddress()}/api/authorities/get/${userId}/permissions`,

@@ -9,6 +9,7 @@ export class ModalService {
   isRegistrationFormVisible = false;
   isSessionExpiredFormVisible = false;
   isShareFormVisible = false;
+  isUpdateProfileFormVisible = false;
 
   constructor() { }
 
@@ -28,10 +29,15 @@ export class ModalService {
     this.isShareFormVisible = true;
   }
 
+  showUpdateProfileForm(): void {
+    this.isUpdateProfileFormVisible = true;
+  }
+
   hideForm(): void {
     this.isAuthenticationFormVisible = false;
     this.isRegistrationFormVisible = false;
     this.isSessionExpiredFormVisible = false;
     this.isShareFormVisible = false;
+    this.isUpdateProfileFormVisible = false;
   }
 }

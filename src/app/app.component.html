@@ -17,3 +17,7 @@
 <app-modal *ngIf="modalService.isShareFormVisible">
   <app-share-form [title]="'Share code block to user'"></app-share-form>
 </app-modal>
+
+<app-modal *ngIf="modalService.isUpdateProfileFormVisible">
+  <app-update-profile-form [title]="'Change profile'"></app-update-profile-form>
+</app-modal>

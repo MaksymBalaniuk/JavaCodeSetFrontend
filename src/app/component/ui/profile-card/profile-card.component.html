@@ -4,20 +4,27 @@
   </mat-card-title>
   <mat-card-subtitle *ngIf="user.email != null">Email: {{ user.email }}</mat-card-subtitle>
   <mat-card-content>
+    <p>Account role: {{ getRole() }}</p>
     <p>Account status: {{ getUserStatus() }}</p>
     <p>Account premium: {{ getUserPremium() }}</p>
     <p>Account created: {{ getUserCreated() | dateFormatter }}</p>
   </mat-card-content>
-  <mat-card-actions align="end" *ngIf="isProfileActionsAvailable()">
+  <mat-card-actions align="end">
     <button mat-raised-button
             color="primary"
-            *ngIf="user.status == 'ACTIVE' && isBanActionAvailable()"
+            *ngIf="user.status == 'ACTIVE' && isChangeActionAvailable()"
+            (click)="changeProfile()">
+      Change
+    </button>
+    <button mat-raised-button
+            color="primary"
+            *ngIf="user.status == 'ACTIVE' && isProfileActionsAvailable() && isBanActionAvailable()"
             (click)="banUser()">
       Ban
     </button>
     <button mat-raised-button
             color="primary"
-            *ngIf="user.status != 'ACTIVE' && isBanActionAvailable()"
+            *ngIf="user.status != 'ACTIVE' && isProfileActionsAvailable() && isBanActionAvailable()"
             (click)="activateUser()">
       Activate
     </button>

@@ -25,6 +25,15 @@ export class UserService {
       );
   }
 
+  getAuthenticatedUser(token: string): Observable<UserEntity> {
+    return this.http.get<UserEntity>(
+      `${this.networkService.getAddress()}/api/users/authenticated-user/get`,
+      { headers: { Authorization: token }})
+      .pipe(
+        catchError(error => this.errorHandle(error))
+      );
+  }
+
   getUserByUsername(username: string): Observable<UserEntity> {
     return this.http.get<UserEntity>(
       `${this.networkService.getAddress()}/api/users/get/by-username/${username}`)
@@ -36,6 +45,24 @@ export class UserService {
   searchUsersByUsername(username: string): Observable<Array<UserEntity>> {
     return this.http.get<Array<UserEntity>>(
       `${this.networkService.getAddress()}/api/users/get-all/by-username/${username}`)
+      .pipe(
+        catchError(error => this.errorHandle(error))
+      );
+  }
+
+  updateAuthenticatedUserUsername(username: string, token: string): Observable<AuthenticationResponse> {
+    return this.http.patch<AuthenticationResponse>(
+      `${this.networkService.getAddress()}/api/users/authenticated-user/update/username/${username}`,
+      {}, { headers: { Authorization: token }})
+      .pipe(
+        catchError(error => this.errorHandle(error))
+      );
+  }
+
+  updateAuthenticatedUserEmail(email: string, token: string): Observable<AuthenticationResponse> {
+    return this.http.patch<AuthenticationResponse>(
+      `${this.networkService.getAddress()}/api/users/authenticated-user/update/email/${email}`,
+      {}, { headers: { Authorization: token }})
       .pipe(
         catchError(error => this.errorHandle(error))
       );

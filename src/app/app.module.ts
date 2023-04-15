@@ -44,6 +44,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { ProfilePageComponent } from './component/page/profile-page/profile-page.component';
 import { ProfileCardComponent } from './component/ui/profile-card/profile-card.component';
+import { UpdateProfileFormComponent } from './component/ui/update-profile-form/update-profile-form.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { ProfileCardComponent } from './component/ui/profile-card/profile-card.c
     PremiumPageComponent,
     ShareFormComponent,
     ProfilePageComponent,
-    ProfileCardComponent
+    ProfileCardComponent,
+    UpdateProfileFormComponent
   ],
   imports: [
     BrowserModule,
