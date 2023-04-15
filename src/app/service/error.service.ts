@@ -17,7 +17,8 @@ export class ErrorService {
   handle(error: HttpErrorResponse): void {
     if (this.determineErrorType(error.error)) {
       if (error.error.message == 'JWT is expired' ||
-        error.error.message == 'JWT is invalid, user is locked') {
+        error.error.message == 'JWT is invalid, user is locked' ||
+        error.error.message == 'JWT is invalid, user access rights are incorrect') {
         this.modalService.hideForm();
         this.modalService.showSessionExpiredForm();
       } else {

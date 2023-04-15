@@ -32,6 +32,15 @@ export class AuthorityService {
       );
   }
 
+  addAdminAuthorityToUser(userId: string, token: string): Observable<any> {
+    return this.http.post<any>(
+      `${this.networkService.getAddress()}/api/authorities/add/authority-to-user/admin/${userId}`,
+      {}, { headers: { Authorization: token }})
+      .pipe(
+        catchError(error => this.errorHandle(error))
+      );
+  }
+
   private errorHandle(error: HttpErrorResponse): Observable<never> {
     this.errorService.handle(error);
     return throwError(() => error.message);

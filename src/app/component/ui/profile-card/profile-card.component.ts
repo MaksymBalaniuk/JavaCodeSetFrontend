@@ -28,6 +28,7 @@ export class ProfileCardComponent implements OnInit, OnDestroy {
   isUserHasAdminAuthoritySubscription$!: Subscription;
   activateUserByIdSubscription$!: Subscription;
   banUserByIdSubscription$!: Subscription;
+  addAdminAuthorityToUserSubscription$!: Subscription;
 
   constructor(private authenticationContextService: AuthenticationContextService,
               private userService: UserService,
@@ -42,10 +43,10 @@ export class ProfileCardComponent implements OnInit, OnDestroy {
           this.getAuthenticatedUserSubscription$ = this.userService.getAuthenticatedUser(userDetails.token)
             .subscribe(userEntity => this.user = userEntity);
         }
+        this.updateUserRole();
       });
     this.currentUserPermissionsSubscription$ = this.authenticationContextService.userPermissions$
       .subscribe(userPermissions => this.currentUserPermissions = userPermissions);
-    this.updateUserRole();
   }
 
   ngOnDestroy(): void {
@@ -66,6 +67,9 @@ export class ProfileCardComponent implements OnInit, OnDestroy {
     }
     if (this.banUserByIdSubscription$ != undefined) {
       this.banUserByIdSubscription$.unsubscribe();
+    }
+    if (this.addAdminAuthorityToUserSubscription$ != undefined) {
+      this.addAdminAuthorityToUserSubscription$.unsubscribe();
     }
   }
 
@@ -158,6 +162,19 @@ export class ProfileCardComponent implements OnInit, OnDestroy {
       this.banUserByIdSubscription$ = this.userService
         .banUserById(this.user.id, currentUserDetails.token)
         .subscribe(userEntity => this.user = userEntity);
+    }
+  }
+
+  makeUserAdmin(): void {
+    const currentUserDetails = this.currentUserDetails;
+    if (this.user != null) {
+      if (this.addAdminAuthorityToUserSubscription$ != undefined) {
+        this.addAdminAuthorityToUserSubscription$.unsubscribe();
+      }
+
+      this.addAdminAuthorityToUserSubscription$ = this.authorityService
+        .addAdminAuthorityToUser(this.user.id, currentUserDetails.token)
+        .subscribe(() => this.updateUserRole());
     }
   }
 }

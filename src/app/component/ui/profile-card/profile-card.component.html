@@ -18,6 +18,12 @@
     </button>
     <button mat-raised-button
             color="primary"
+            *ngIf="user.status == 'ACTIVE' && !isUserAdmin && isProfileActionsAvailable() && isBanActionAvailable()"
+            (click)="makeUserAdmin()">
+      Make admin
+    </button>
+    <button mat-raised-button
+            color="primary"
             *ngIf="user.status == 'ACTIVE' && isProfileActionsAvailable() && isBanActionAvailable()"
             (click)="banUser()">
       Ban
