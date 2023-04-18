@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {ModalService} from "./service/modal.service";
-import {ErrorService} from "./service/error.service";
 
 @Component({
   selector: 'app-root',
@@ -8,7 +7,7 @@ import {ErrorService} from "./service/error.service";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'JavaCodeSet';
+  title = 'java-code-set';
 
-  constructor(public modalService: ModalService, public errorService: ErrorService) { }
+  constructor(public modalService: ModalService) { }
 }
