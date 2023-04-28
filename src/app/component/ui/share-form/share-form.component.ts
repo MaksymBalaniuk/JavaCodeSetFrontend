@@ -12,7 +12,7 @@ import {ShareEntity} from "../../../entity/share-entity";
 @Component({
   selector: 'app-share-form',
   templateUrl: './share-form.component.html',
-  styleUrls: ['./../authentication-form/authentication-form.component.scss']
+  styleUrls: ['./share-form.component.scss', './../authentication-form/authentication-form.component.scss']
 })
 export class ShareFormComponent implements OnInit, OnDestroy {
 
@@ -23,11 +23,16 @@ export class ShareFormComponent implements OnInit, OnDestroy {
   userEntity!: UserEntity;
   toUserShares: Array<UserEntity> = [];
   filteredToUserShares!: Observable<string[]>;
+  currentCodeBlockShares: Array<ShareEntity> = [];
+  currentCodeBlockToUserShares: Array<UserEntity> = [];
 
   getUserByUsernameSubscription$!: Subscription;
   createShareSubscription$!: Subscription;
   getAllSharesFromUserIdSubscription$!: Subscription;
   countToUsernameSharesSubscription$!: Subscription;
+  getAllSharesOfCodeBlockIdSubscription$!: Subscription;
+  countCurrentCodeBlockSharesSubscription$!: Subscription;
+  deleteShareByIdSubscription$!: Subscription;
   errorSubscription$!: Subscription;
 
   form = new FormGroup({
@@ -45,14 +50,8 @@ export class ShareFormComponent implements OnInit, OnDestroy {
               private errorService: ErrorService) { }
 
   ngOnInit(): void {
-    const currentUserDetails = this.dataLoadContextService.userDetails;
-    if (currentUserDetails.user != null) {
-      this.getAllSharesFromUserIdSubscription$ = this.shareService
-        .getAllSharesFromUserId(currentUserDetails.user.id, currentUserDetails.token)
-        .subscribe(shares => {
-          this.fillToUserSharesView(this.getToUserIdShares(shares));
-        });
-    }
+    this.updateToUserSharesView();
+    this.updateCurrentCodeBlockShares();
   }
 
   ngOnDestroy(): void {
@@ -68,8 +67,32 @@ export class ShareFormComponent implements OnInit, OnDestroy {
     if (this.countToUsernameSharesSubscription$ != undefined) {
       this.countToUsernameSharesSubscription$.unsubscribe();
     }
+    if (this.getAllSharesOfCodeBlockIdSubscription$ != undefined) {
+      this.getAllSharesOfCodeBlockIdSubscription$.unsubscribe();
+    }
+    if (this.countCurrentCodeBlockSharesSubscription$ != undefined) {
+      this.countCurrentCodeBlockSharesSubscription$.unsubscribe();
+    }
+    if (this.deleteShareByIdSubscription$ != undefined) {
+      this.deleteShareByIdSubscription$.unsubscribe();
+    }
     if (this.errorSubscription$ != undefined) {
       this.errorSubscription$.unsubscribe();
+    }
+  }
+
+  updateToUserSharesView(): void {
+    const currentUserDetails = this.dataLoadContextService.userDetails;
+    if (currentUserDetails.user != null) {
+      if (this.getAllSharesFromUserIdSubscription$ != undefined) {
+        this.getAllSharesFromUserIdSubscription$.unsubscribe();
+      }
+
+      this.getAllSharesFromUserIdSubscription$ = this.shareService
+        .getAllSharesFromUserId(currentUserDetails.user.id, currentUserDetails.token)
+        .subscribe(shares => {
+          this.fillToUserSharesView(this.getToUserIdShares(shares));
+        });
     }
   }
 
@@ -147,6 +170,69 @@ export class ShareFormComponent implements OnInit, OnDestroy {
     });
   }
 
+  updateCurrentCodeBlockShares(): void {
+    const currentUserDetails = this.dataLoadContextService.userDetails;
+    const currentCodeBlock = this.dataLoadContextService.getCurrentCodeBlock();
+    if (currentUserDetails != null && currentCodeBlock != null) {
+      if (this.getAllSharesOfCodeBlockIdSubscription$ != undefined) {
+        this.getAllSharesOfCodeBlockIdSubscription$.unsubscribe();
+      }
+
+      this.getAllSharesOfCodeBlockIdSubscription$ = this.shareService
+        .getAllSharesOfCodeBlockId(currentCodeBlock.id, currentUserDetails.token)
+        .subscribe(shares => {
+          this.currentCodeBlockShares = shares.slice();
+          this.fillCurrentCodeBlockToUserShares(shares.slice());
+        });
+    }
+  }
+
+  fillCurrentCodeBlockToUserShares(shares: Array<ShareEntity>): void {
+    if (shares.length == 0) {
+      this.currentCodeBlockToUserShares = [];
+      return;
+    }
+
+    let countCurrentCodeBlockShares = new BehaviorSubject<number>(0);
+    const tempArray: Array<UserEntity> = [];
+
+    this.countCurrentCodeBlockSharesSubscription$ = countCurrentCodeBlockShares.subscribe(() => {
+      if (tempArray.length == shares.length) {
+        this.currentCodeBlockToUserShares = tempArray.sort(
+          (a, b) => a.username.localeCompare(b.username));
+      }
+    });
+    shares.forEach(share => {
+      this.userService.getUserById(share.toUserId).subscribe(userEntity => {
+        tempArray.push(userEntity);
+        countCurrentCodeBlockShares.next(countCurrentCodeBlockShares.value + 1);
+      });
+    });
+  }
+
+  removeShare(toUserEntity: UserEntity): void {
+    let removeShareId = '';
+    this.currentCodeBlockShares.forEach(share => {
+      if (share.toUserId == toUserEntity.id) {
+        removeShareId = share.id;
+      }
+    });
+
+    const currentUserDetails = this.dataLoadContextService.userDetails;
+    if (removeShareId != '' && currentUserDetails.user != null) {
+      if (this.deleteShareByIdSubscription$ != undefined) {
+        this.deleteShareByIdSubscription$.unsubscribe();
+      }
+
+      this.deleteShareByIdSubscription$ = this.shareService
+        .deleteShareById(removeShareId, currentUserDetails.token)
+        .subscribe(() => {
+          this.updateToUserSharesView();
+          this.updateCurrentCodeBlockShares();
+        });
+    }
+  }
+
   submit() {
     if (this.successValidation()) {
       this.loading = true;
@@ -179,7 +265,8 @@ export class ShareFormComponent implements OnInit, OnDestroy {
             this.createShareSubscription$ = this.shareService.createShare(share, currentUserDetails.token)
               .subscribe(() => {
                 this.errorService.clear();
-                this.modalService.hideForm();
+                this.updateToUserSharesView();
+                this.updateCurrentCodeBlockShares();
               });
           }
         }

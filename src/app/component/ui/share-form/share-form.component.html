@@ -21,4 +21,17 @@
   </div>
   <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
   <button mat-raised-button color="primary" type="submit">Share</button>
+  <div class="form-field-container" *ngIf="currentCodeBlockToUserShares.length > 0">
+    <mat-form-field class="shares-container" appearance="fill">
+      <mat-label>Already shared to users</mat-label>
+      <mat-chip-list>
+        <mat-chip *ngFor="let user of currentCodeBlockToUserShares"
+                  (removed)="removeShare(user)">
+          {{ user.username }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+      <mat-hint>Remove username to stop share</mat-hint>
+    </mat-form-field>
+  </div>
 </form>
