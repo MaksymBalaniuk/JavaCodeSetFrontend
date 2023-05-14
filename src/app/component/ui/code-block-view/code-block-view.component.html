@@ -46,10 +46,14 @@
               [cbContent]="codeBlock.content">
         Copy code
       </button>
-      <button mat-button (click)="addNewCodeBlock()">
+      <button mat-button
+              *ngIf="authenticationContextService.isAuthorized$ | async"
+              (click)="addNewCodeBlock()">
         Save code
       </button>
-      <button mat-button (click)="openCodeBlockInCompiler()">
+      <button mat-button
+              *ngIf="authenticationContextService.isAuthorized$ | async"
+              (click)="openCodeBlockInCompiler()">
         Open code in compiler
       </button>
     </mat-card-actions>
